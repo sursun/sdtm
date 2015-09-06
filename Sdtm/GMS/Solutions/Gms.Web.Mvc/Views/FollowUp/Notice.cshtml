@@ -1,0 +1,44 @@
+﻿@using Gms.Domain
+@model Gms.Domain.FollowUp.FollowUpInfo
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+
+    <div id="toolbar" style="padding: 5px; height: auto">
+        <div>
+      
+                患者姓名：<input name="RealName" class="messager-input" style="width: 80px" />
+                患者身份证号：<input name="IdCard" class="messager-input" style="width: 80px" />
+                诊断分型：@Html.DropDownListForCommonCode(c=>c.Patient.Diabetes,CommonCodeType.糖尿病类型,"DiabetesId","全部")
+                复诊状态：@Html.DropDownListForEnum(c=>c.FuZhenStatus,"FuZhenStatus","全部",null)
+           
+     
+            下次复诊时间：<input name="FollowUpDate.Start" class="easyui-datebox"  /> 至 <input name="FollowUpDate.End" class="easyui-datebox" />
+            
+            排序：
+            <select name="OrderBy" >
+                <option value="">默认</option>
+                <option value="Patient.CodeNo">患者编号</option>
+                <option value="FollowUpDate">复诊时间</option>
+            </select>
+
+                <a href="#" id="followupinfo_search" class="easyui-linkbutton search" iconcls="icon-search">搜索</a>
+            <span style="color: black;"></span>
+        </div>
+    </div>
+     
+    <table id="followupinfo_search_list" url="@Url.Action("NoticeList","FollowUp")" >
+            
+    </table>
+        
+</body>
+<script type="text/javascript" src="@Url.Content("/Scripts/FollowUp/Notice.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Notice.Init();
+    });
+
+</script>
+

@@ -1,0 +1,69 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.Health.GdmRisk
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/BaseLine/GdmRiskSave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+
+    <table class="form_table" style="width:100%;">
+        <tr>
+            <td class="td-label w-i-20">高危因素</td>
+            <td>
+                <ul>
+                    
+                
+                    @{
+                        var d = new HighRiskFlag().ToDictionary();
+                        foreach (var key in d.Keys)
+                        {
+                            if ((Model.HighRiskFlag & key) == key)
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForHighRiskFlag" value="@key" checked/>
+                                    <label>@d[key]</label>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForHighRiskFlag" value="@key"/>
+                                    <label>@d[key]</label>
+                                </li>
+                            }
+                        
+                        }
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">孕前体重</td>
+            <td>
+                @Html.TextBoxFor(c=>c.WeightBefore)
+                Kg
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">身高</td>
+            <td>
+                @Html.TextBoxFor(c=>c.Height)
+                cm
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">BMI</td>
+            <td>
+                @Html.TextBoxFor(c=>c.Bmi)
+                Kg/m<sup>2</sup>
+            </td>
+        </tr>
+ 
+    </table>
+    
+</form>
+

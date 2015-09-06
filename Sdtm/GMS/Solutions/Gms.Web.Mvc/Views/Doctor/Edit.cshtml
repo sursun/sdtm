@@ -1,0 +1,107 @@
+﻿
+@using Gms.Common
+@using Gms.Domain
+@model Gms.Domain.Doctor
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/Doctor/CreateOrUpdate">
+
+    <table>
+        <tr>
+            <td>工号</td>
+            <td>
+ 
+                @Html.TextBoxFor(c => c.CodeNo,new{@class="editdisabled"})
+               
+                <input id="Id" name="Id" style="display: none" type="number" value="@Model.Id"/>
+            </td>
+        </tr>
+
+        <tr class="edithide">
+            <td>密码</td>
+            <td>
+                <input name="psw" value=""/>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>科室</td>
+            <td>
+                @{
+                    int deptId = 0;
+                    string deptName = "";
+                    if ( Model != null && Model.Department != null)
+                    {
+                        deptId = Model.Department.Id;
+                        deptName = Model.Department.Name;
+                    }
+                }
+
+                <input id="Department_Id" name="Department.Id" style="display: none" value="@deptId" />
+                <input id="Department_Name" name="Department.Name"  disabled="disabled" value="@deptName" />
+
+                <a id="selectDept" href="#">选择科室</a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>真实姓名</td>
+            <td>
+                @Html.TextBoxFor(c => c.RealName)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>性别</td>
+            <td>
+                @Html.DropDownListForEnum(c=>c.Sex,"请选择",null)
+            </td>
+        </tr>
+
+        <tr>
+            <td>手机号码</td>
+            <td>
+                @Html.TextBoxFor(c => c.Mobile, new { @class = "easyui-numberbox" })
+            </td>
+        </tr>
+
+        <tr>
+            <td>职称</td>
+            <td>
+                @Html.TextBoxFor(c=>c.ProfessionalLevel)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>职务</td>
+            <td>
+                @Html.TextBoxFor(c=>c.Duty)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>备注</td>
+            <td>
+                @Html.TextAreaFor(c=>c.Note)
+            </td>
+        </tr>
+        
+        <tr>
+            <td>是否启用</td>
+            <td>
+                @Html.DropDownListFor(c=>c.Enabled)
+            </td>
+        </tr>
+
+    </table>
+
+</form>
+
+<div id="selcet_dept_dlg" dlgtitle="选择科室" style="display: none;padding:8px;">
+    <iframe id="selcet_dept_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+        @*动态加载*@
+    </iframe>
+</div>

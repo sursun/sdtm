@@ -1,0 +1,115 @@
+﻿@using Gms.Domain
+@using Gms.Domain.Health
+@model Gms.Domain.Health.HealthEducation
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+    
+    <style>
+        .jynr {
+            margin: 5px;
+            padding: 8px;
+            border: 1px solid #c5c6c7;
+            font-size: 12px;
+        }
+        
+        .jynr span{
+            border: 1px solid #c5c6c7;
+            color: #757575;
+            padding: 4px;
+            margin: 3px;
+        }
+
+        .jynr span.hot{
+            color: #ffffff;
+            background-color: #0099B9;
+            /*background-color: #58ACFF;*/
+        }
+    </style>
+
+    <div class="jynr">
+        
+        <b>既往接受糖尿病教育评估</b>
+
+        <div style="margin-top: 6px;">
+            @if (Model.YingYangShi == YesNoUnclear.是)
+            {
+                <span class="hot">营养师教育</span>
+            }
+            else
+            {
+                <span>营养师教育</span>
+            }
+
+            @if (Model.HuShi == YesNoUnclear.是)
+            {
+                <span class="hot">糖尿病护士教育</span>
+            }
+            else
+            {
+                <span>糖尿病护士教育</span>
+            }
+            
+            @if (Model.ZuBing == YesNoUnclear.是)
+            {
+                <span class="hot">足病防护教育</span>
+            }
+            else
+            {
+                <span>足病防护教育</span>
+            }
+   
+        </div>
+    </div> 
+
+    <div class="jynr">
+        <b>已实施教育内容</b>
+
+        <div style="margin-top: 6px;">
+            @{
+                var d = new EducationFlag().ToDictionary();
+                foreach (var key in d.Keys)
+                {
+                    if ((Model.EducationFlag & key) == key)
+                    {
+                        <span class="hot">@d[key]</span>
+                    }
+                    else
+                    {
+                        <span>@d[key]</span>
+                    }
+                }
+            }
+            <br/>
+
+        </div>
+    </div>
+
+    <input id="PatientId" value="@Model.Patient.Id" style="display: none">
+    
+    <div id="toolbar" style="padding: 5px; height: auto">
+        <div style="margin-bottom: 5px">
+            <a id="btnAdd" href="#" class="easyui-linkbutton" iconcls="icon-add" plain="true">添加</a>
+            <a id="btnDel" href="#" class="easyui-linkbutton" iconcls="icon-remove" plain="true">删除</a>
+        </div>
+    </div>
+     
+    <table id="education_search_list"  url="@Url.Action("EducationList", "Health", new { PatientId = @Model.Patient.Id })" >
+            
+    </table>
+  
+    <div id="editdlg"></div>
+    
+</body>
+<script type="text/javascript" src="@Url.Content("/Scripts/Health/Education.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Education.Init();
+    });
+
+</script>
+
+
+

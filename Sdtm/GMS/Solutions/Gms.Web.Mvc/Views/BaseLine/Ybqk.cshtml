@@ -1,0 +1,197 @@
+﻿
+@using Gms.Common
+@using Gms.Domain
+@model Gms.Domain.Health.Identification
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/BaseLine/YbqkSave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+
+    <table class="form_table" style="width:100%;">
+        <tr>
+            <td class="td-label w-i-20">患者姓名</td>
+            <td>
+                @Model.Patient.RealName
+                @*@Html.TextBoxFor(c=>c.Patient.RealName,new{disabled="disabled"})*@
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">性别</td>
+            <td>
+                @Model.Patient.Sex.ToString()
+                @*@Html.DropDownListForEnum(c=>c.Patient.Sex,"",new{disabled="disabled"})*@
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">出生年月</td>
+            <td>
+                @Model.Patient.Birthday.ToString("yyyy年MM月dd日")
+                @*@Html.TextBoxFor(c=>c.Patient.Birthday,new{disabled="disabled"})*@
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">年龄</td>
+            <td>
+                @Model.Patient.Age
+                岁
+                @*@Html.TextBoxFor(c=>c.Patient.Age,new{disabled="disabled"})*@
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">身份证号</td>
+            <td>
+                @Model.Patient.IdCard
+                @*@Html.TextBoxFor(c=>c.Patient.IdCard,new{disabled="disabled"})*@
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">所在地区</td>
+            <td>
+                @{
+                    string strArea = "";
+                    if (Model.Patient.Area != null)
+                    {
+                        strArea = Model.Patient.Area.FullNameString();
+                    }
+                }
+                <span id="showArea">
+                    @strArea
+                </span>
+                
+                @*@Html.DropDownListForCommonCode(c=>c.Patient.Area,CommonCodeType.地区)*@
+                @Html.TextBoxFor(c=>c.Patient.Area.Id,new{style="display: none;"})
+                <a id="selectArea" href="#/CommonCode/Select?type=@CommonCodeType.地区" class="btn-small">选择/修改</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">付费方式</td>
+            <td>
+                @Html.DropDownListFor(c=>c.PayType)
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="td-label">手机号码</td>
+            <td>
+                @Html.TextBoxFor(c=>c.Patient.Mobile1)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">家庭电话</td>
+            <td>
+                @Html.TextBoxFor(c=>c.Patient.Mobile2)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">教育水平</td>
+            <td>
+                @Html.DropDownListForCommonCode(c=>c.EducationalLevel,CommonCodeType.教育水平)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">职业</td>
+            <td>
+                @Html.DropDownListForCommonCode(c=>c.Job,CommonCodeType.职业)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">民族</td>
+            <td>
+                @Html.DropDownListForCommonCode(c=>c.Nation,CommonCodeType.民族)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">吸烟</td>
+            <td>
+                
+                @{
+                    var selval = (int) YouWuJie.有;
+                    String styleStr = "";
+                }
+                            
+                @Html.DropDownListForEnum(c=>c.Smoking,"",new{@class="select_show_view",forview="SmokingView",selectval=selval})
+                @{
+                    styleStr = Model.Smoking != YouWuJie.有 ? "display: none;" : "";
+                }
+                <span id="SmokingView" style="@styleStr">
+                    @Html.TextBoxFor(c => c.SmokingYear, new { style = "width:40px;" })年，平均
+                    @Html.TextBoxFor(c => c.SmokingCount, new { style = "width:40px;" }) 支/天
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">饮酒</td>
+            <td>
+                
+                @Html.DropDownListForEnum(c => c.Drink, "", new { @class = "select_show_view", forview = "DrinkView", selectval = selval })
+                @{
+                    styleStr = Model.Drink != YouWuJie.有 ? "display: none;" : "";
+                }
+                <span id="DrinkView" style="@styleStr">
+                    @Html.TextBoxFor(c => c.DrinkYear, new { style = "width:40px;" })年，平均
+                    @Html.TextBoxFor(c => c.DrinkCapacity, new { style = "width:40px;" }) ml/周（白酒）
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">既往最高体重</td>
+            <td>
+                @Html.TextBoxFor(c => c.HighestWeight, new { style = "width:40px;" })Kg
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">诊断日期</td>
+            <td>
+                @*<input id="DiagnoseDate" name="DiagnoseDate" type="text" class="easyui-datebox" value="@Model.DiagnoseDate">*@
+                @Html.TextBoxFor(c => c.Patient.DiagnoseDate, new { @class = "easyui-datebox" })
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">糖尿病病程</td>
+            <td>
+                <span id="DiseaseCourse">@Model.Patient.DiseaseCourse</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">糖尿病类型</td>
+            <td>
+                @Html.DropDownListForCommonCode(c=>c.Patient.Diabetes,CommonCodeType.糖尿病类型)
+            </td>
+        </tr>
+    </table>
+
+</form>
+<script type="text/javascript">
+    $('#Patient_DiagnoseDate').datebox({
+        onSelect: function (date) {
+           
+            var nowDate = new Date();
+
+            var val = "";
+
+            var nYear = nowDate.getFullYear() - date.getFullYear();
+            
+            var nMonth = nowDate.getMonth() - date.getMonth();
+
+            if (nMonth < 0) {
+                nYear = nYear - 1;
+                nMonth = nowDate.getMonth() + 12 - date.getMonth();
+            }
+
+            if (nYear > 0) {
+                val = nYear + "年";
+            }
+
+            if (nMonth > 0)
+            {
+                val += (nMonth + "月");
+            }
+
+            $("#DiseaseCourse").text(val);
+        }
+    });
+</script>

@@ -1,0 +1,186 @@
+﻿@using Gms.Domain
+@using Microsoft.Web.Mvc.Html
+@model Gms.Domain.Health.EvaluationScale
+@{
+    Layout = null;
+    
+    String strData = "";
+
+    if (Model.Answers != null)
+    {
+        strData = Model.Answers;
+    }
+
+    IList<int> listData = new List<int>();
+    if (strData.Length > 2)
+    {
+        listData = strData.Split('|').Select(c => (c.Length>0?int.Parse(c):0)).ToList();
+    }
+    if (listData.Count < 20)
+    {
+        for (int i = listData.Count; i < 20; i++)
+        {
+            listData.Add(0);
+        }
+    }
+
+    String[,] arrAsk =
+    {
+        {"我感到情绪沮丧，郁闷", "1"},
+        {"我感到早晨心情最好", "4"},  
+        {"我要哭或想哭","1"},  
+        {"我夜间睡眠不好","1"},  
+        {"我吃饭像平时一样多","4"},  
+        {"我的性功能正常","4"},  
+        {"我感到体重减轻","1"},  
+        {"我为便秘烦恼","1"},  
+        {"我的心跳比平时快","1"},  
+        {"我无故感到疲劳","1"},  
+        {"我的头脑像往常一样清楚","4"},  
+        {"我做事情像平时一样不感到困难","4"},  
+        {"我坐卧不安，难以保持平静","1"},  
+        {"我对未来感到有希望","4"},  
+        {"我比平时更容易激怒","1"},  
+        {"我觉得决定什么事很容易","4"},  
+        {"我感到自己是有用的和不可缺少的人","4"},  
+        {"我的生活很有意义","4"},  
+        {"假如我死了别人会过的更好","1"},  
+        {"我仍旧喜爱自己平时喜爱的东西","4"}
+    };
+    
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("/Content/evascale.css")"/>   
+
+<form id="formScale" method="post" action="/Health/EvaScaleSaveOrUpdate">
+    
+    @Html.TextBoxFor(c=>c.Id,new {style="display: none"})
+    @Html.TextBoxFor(c=>c.Patient.Id,new {style="display: none"})
+    @Html.TextBoxFor(c=>c.ScaleType,new {style="display: none"})
+    
+    <div style="text-align: center;background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+        <span style="font-size: 16px;font-weight: bold;">Zung抑郁评定量表</span>
+        
+        <p>记录日期:@Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})</p>
+    
+    </div>
+
+    <table class="scaletable">
+        
+        <thead>
+            <tr>
+                <td style="width:40px;">题号</td>
+                <td style="width:460px;">提问内容</td>
+                <td style="width:65px;">无</td>
+                <td style="width:65px;">有时</td>
+                <td style="width:65px;">经常</td>
+                <td style="width:65px;">持续</td>
+                <td style="width:50px;">得分</td>   
+            </tr>
+        </thead>
+
+        <tbody>
+            
+                
+            @{
+                int nIndex = -1;
+
+                String strName = "";
+
+                int nCount = arrAsk.GetLength(0);
+
+                while (nIndex < nCount-1)
+                {
+                    nIndex++;
+                    strName = String.Format("scale_ques_{0}", nIndex);
+
+                    <tr>
+                        <td style="width: 36px;">
+                            @(nIndex + 1)
+                        </td>
+                        <td style="width: 396px;">
+                            @arrAsk[nIndex, 0]
+                        </td>
+
+                        @if (arrAsk[nIndex, 1] == "1")
+                        {
+                            for (int i = 1; i <= 4; i++)
+                            {
+                                if (listData[nIndex] == i)
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, true)@i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, false)@i
+                                    </td>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 4; i > 0; i--)
+                            {
+                                if (listData[nIndex] == i)
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, true)@i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, false)@i
+                                    </td>
+                                }
+                            }
+                        }
+
+                        <td style="width: 46px;">
+                            <input name="scaleresult" style="width: 40px;" value="@listData[nIndex]"/>
+                        </td>
+
+                    </tr>
+
+                }
+            }
+                
+
+            <tr>
+                <td>&emsp;</td>
+                <td>
+                    <b>总分</b>
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    <input name="scaletotal" style="width: 40px;" value="@Model.Result"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</form>
+<div style="background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+    <span>
+        结果分析：指标为总分。将20个项目的各个得分相加，即得粗分。标准分等于粗分乘以1.25后的整数部分。总粗分的正常上限为41分，标准总分为53分。仅做参考。此评定量表不仅可以帮助诊断是否有抑郁症状，还可以判定抑郁程度的轻重。因此，一方面可以用来作为辅助诊断的工具，另一方面也可以用来观察在治疗过程中抑郁的病情变化，用来作为疗效的判定指标。但是，此评定量表不能用来判断抑郁的性质，所以不是抑郁症的病因及疾病诊断分类用表。
+    </span>
+    <br/>
+    <span>
+        标准分：25-49正常，50-59轻度抑郁，60－69中度抑郁； 70及以上严重抑郁。
+    </span>
+</div>
+  

@@ -1,0 +1,81 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Health.Treatment
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+
+<body>
+
+    <fieldset>
+        <legend>
+            诊疗方案
+        </legend>
+        
+        <input id="treatmentId" value="@Model.Id" style="display: none">
+        
+        
+        <table class="form_table" style="width: 100%;">
+            <tr>
+                <td>
+                    <div id="toolbar" style="padding: 5px; height: auto">
+                        输入拼音首字母快捷检索添加药品：
+                        <input id="medicatetag" />
+                         <span>|</span>             
+                            <a href="#" id="btnAdd" class="easyui-linkbutton" >添加药品</a>
+                        <div id="MedicineRecommend">
+                            @{
+                                Html.RenderAction("MedicineRecommend","Medicine");
+                            }
+                        </div>
+                        
+                    </div>
+     
+                    <div>
+                        <table id="medicate_list" url="/Health/MedicateList?treatmentid=@Model.Id" ></table>
+                    </div>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    其他药品：
+                    <br/>
+                    @Html.TextAreaFor(c=>c.Other,new{style="width: 100%"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    饮食运动治疗方案：
+                    <br/>
+                    @Html.TextAreaFor(c=>c.Sport,new{style="width: 100%"})
+                </td>
+            </tr>
+        </table>
+        
+    </fieldset>
+    
+    <fieldset>
+        <legend>
+            备注
+        </legend>
+        @Html.TextAreaFor(c=>c.Note,new{style="width: 100%"})
+    </fieldset>
+    
+    <div style="text-align:center;">
+        <a href="#" id="btnSave" class="easyui-linkbutton" iconcls="icon-save">保存</a>
+    </div>
+    
+    <div id="selcet_medicine_dlg" dlgtitle="选择药品" style="display: none;padding:8px;">
+        <iframe id="selcet_medicine_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+            @*动态加载*@
+        </iframe>
+    </div>
+
+</body>
+<script type="text/javascript" src="@Url.Content("/Scripts/Health/zlfa.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Zlfa.Init();
+    });
+</script>

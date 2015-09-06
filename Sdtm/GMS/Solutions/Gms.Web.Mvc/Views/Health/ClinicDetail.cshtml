@@ -1,0 +1,23 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Health.Clinic
+
+@{
+    Layout = null;
+}
+
+<div style="margin-top: 5px;margin-bottom: 10px;">
+    <span id="ClinicName"style="font-weight:bolder;font-size: x-large; height: 28px;">@Model.Name</span>
+
+    <a id="btnName" href="#@Model.Id" class="btn-small">修改</a>
+</div>
+
+<table class="form_table">
+
+    <tr>
+        <td class="td-label w-i-20" style="vertical-align: middle">临床事件评估</td>
+        <td>
+            <a id="btnPingGu" href="#@Model.Id" class="btn-small">编辑/完善</a>
+        </td>
+    </tr>
+   
+</table>

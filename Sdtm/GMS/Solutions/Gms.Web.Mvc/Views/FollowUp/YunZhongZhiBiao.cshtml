@@ -1,0 +1,204 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.FollowUp.YunZhong
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/FollowUp/YunZhongSave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+    
+    <fieldset>
+        <legend>
+            随访指标
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">随访时间</td>
+                <td>
+                    @Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">体重</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Weight,new{style="width: 40px;"})
+                    Kg
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">孕周（W）</td>
+                <td>
+                    @Html.TextBoxFor(c => c.PregnancyWeeks,new{style="width: 40px;"})
+                    周
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血压（BP）</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BloodPressureHigh,new{style="width: 40px;"})
+                    /
+                    @Html.TextBoxFor(c => c.BloodPressureLow,new{style="width: 40px;"})
+                    mmHg  
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">酮体</td>
+                <td>
+                    @{
+                        IList<OptionItem> options = new List<OptionItem>();
+                        options.Add(new OptionItem() {Text = "阴性", Value = 0});
+                        options.Add(new OptionItem() {Text = "+", Value = 1});
+                        options.Add(new OptionItem() {Text = "++", Value = 2});
+                        options.Add(new OptionItem() {Text = "+++", Value = 3});
+                    }
+                    @Html.DropDownList(options,"Ketone",Model.Ketone,null)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血糖（当天）</td>
+                <td>
+                    餐后
+                    @Html.TextBoxFor(c => c.PbgHours,new{style="width: 40px;"})
+                    小时，
+                    @Html.TextBoxFor(c => c.PbgValue,new{style="width: 40px;"})
+                    mmol/L
+                    <span class="sub-label">
+                        目标范围：空腹3.3~5.3mmol/L，餐后1h＜7.8mmol/L，餐后2h＜6.7mmol/L
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血糖监测频率</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BloodCheckTimes,new{style="width: 40px;"})
+                    次/月 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">Fbg</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BloodCheckTimes,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">PBG(早)</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Pbg0,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">PBG(中)</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Pbg1,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">PBG(晚)</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Pbg2,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">低血糖次数（过去一周）</td>
+                <td>
+                    @{
+                        options.Clear();
+                        options.Add(new OptionItem() {Text = "0", Value = 0});
+                        options.Add(new OptionItem() { Text = "1-2", Value = 1 });
+                        options.Add(new OptionItem() { Text = "3-5", Value = 2 });
+                        options.Add(new OptionItem() { Text = ">5", Value = 3 });
+                    }
+                    @Html.DropDownList(options,"DxtTimes",Model.DxtTimes,null)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">糖化血红蛋白（HbA1c）</td>
+                <td>
+                    @Html.TextBoxFor(c => c.HbA1c,new{style="width: 40px;"})
+                    %
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">ALT</td>
+                <td>
+                    @Html.TextBoxFor(c => c.ALT,new{style="width: 40px;"})
+                    IU/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">GGT</td>
+                <td>
+                    @Html.TextBoxFor(c => c.GGT,new{style="width: 40px;"})
+                    IU/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">BUN</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BUN,new{style="width: 40px;"})
+                    umol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">尿蛋白</td>
+                <td>
+                    @{
+                        options.Clear();
+                        options.Add(new OptionItem() { Text = "-", Value = 0 });
+                        options.Add(new OptionItem() { Text = "+", Value = 1 });
+                        options.Add(new OptionItem() { Text = "++", Value = 2 });
+                        options.Add(new OptionItem() { Text = "+++", Value = 3 });
+                    }
+                    @Html.DropDownList(options,"UrineProtein",Model.UrineProtein,null)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">TG</td>
+                <td>
+                    @Html.TextBoxFor(c => c.TG,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">TC</td>
+                <td>
+                    @Html.TextBoxFor(c => c.TC,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">高密度脂蛋白HDL</td>
+                <td>
+                    @Html.TextBoxFor(c => c.HDL,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">低密度胆固醇LDL</td>
+                <td>
+                    @Html.TextBoxFor(c => c.LDL,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血常规Hb</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Hb,new{style="width: 40px;"})
+                    g/L 
+                </td>
+            </tr>
+        
+        </table>
+    
+    </fieldset>
+    
+</form>
+

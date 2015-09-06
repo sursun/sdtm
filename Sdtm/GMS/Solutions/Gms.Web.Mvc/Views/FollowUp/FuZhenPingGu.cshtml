@@ -1,0 +1,178 @@
+﻿
+@using System.Collections
+@using Gms.Common
+@model Gms.Domain.FollowUp.FuZhen
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+    <form id="formPingGu" method="post" action="/FollowUp/FuZhenPingGuSave">
+    
+        <input name="Id" type="text" style="display: none" value="@Model.Id">
+        <input name="TnbBasic.Id" type="text" style="display: none" value="@Model.TnbBasic.Id">
+        <input name="BloodRt.Id" type="text" style="display: none" value="@Model.BloodRt.Id">
+
+        <fieldset>
+            <legend>
+                随访评估
+            </legend>
+    
+            <table class="form_table" style="width:100%;">
+                <tr>
+                    <td class="td-label w-i-20">体重</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.TnbBasic.Weight,new{style="width: 40px;"})
+                        Kg
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">空腹血糖FBG</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.TnbBasic.FBG,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">餐后血糖PBG</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.TnbBasic.PBG,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">ALT</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Alt,new{style="width: 40px;"})
+                        Iu/L  
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">AST</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Ast,new{style="width: 40px;"})
+                        Iu/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">GGT</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Ggt,new{style="width: 40px;"})
+                        Iu/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">血尿酸UA</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Ua,new{style="width: 40px;"})
+                        umol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">BUN</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Bun,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">SCR</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Scr,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">eGFR</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Egfr,new{style="width: 40px;"})
+                        ml/min
+                        <span class="sub-label">Cockcroft-Gault(C-G)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">HbA1c</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.TnbBasic.HbA1c,new{style="width: 40px;"})
+                        %
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">总胆固醇TC（CHO）</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Tc,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">甘油三酯TG</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Tg,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">低密度胆固醇LDL</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.LDL,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">高密度脂蛋白HDL</td>
+                    <td>
+                        @Html.TextBoxFor(c => c.BloodRt.Hdl,new{style="width: 40px;"})
+                        mmol/L 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label w-i-20">血压BP</td>
+                    <td>
+                        @Html.TextBoxFor(c=>c.TnbBasic.BloodPressureHigh,new{style="width: 40px;"})
+                        /
+                        @Html.TextBoxFor(c=>c.TnbBasic.BloodPressureLow,new{style="width: 40px;"})
+                        mmHg
+                    </td>
+                </tr>
+        
+            </table>
+
+        </fieldset>
+
+    </form>
+    
+    <div style="text-align:center;">
+        <a href="#" id="btnSave" class="easyui-linkbutton" iconcls="icon-save">保存</a>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $('#btnSave').click(function () {
+
+            var formOptions = {
+                defaultbefore: false,
+                dataType: 'json',
+                success: function (data, status, xhr, $form) {
+
+                    if (data.success) {
+
+                        $.messager.alert('提示', '保存成功！');
+                       
+                    } else {
+
+                        $.messager.alert('错误', '保存失败：' + data.data, 'error');
+
+                    }
+                }
+            };
+
+            $("#formPingGu").submitForm(formOptions);
+
+        });
+
+    });
+</script>

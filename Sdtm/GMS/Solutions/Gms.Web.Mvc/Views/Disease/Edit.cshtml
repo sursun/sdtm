@@ -1,0 +1,64 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Disease
+
+@{
+    Layout = null;
+}
+
+<form id="departmentform" method="post" action="/Disease/SaveOrUpdate">
+
+    <table>
+        
+        <tr>
+            <td>类别</td>
+            <td>
+                @{
+                    int typeId = 0;
+                    string typeName = "";
+                    if ( Model != null && Model.Type != null)
+                    {
+                        typeId = Model.Type.Id;
+                        typeName = Model.Type.Name;
+                    }
+                }
+
+                <input id="Type_Id" name="Type.Id" style="display: none" value="@typeId" />
+                <input id="Type_Name" disabled="disabled" value="@typeName" />
+
+                <a id="selectType" href="#/CommonCode/TypeInfo?type=@CommonCodeType.疾病类别">选择类别</a>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>名称</td>
+            <td>
+ 
+                @Html.TextBoxFor(c => c.Name)
+               
+                <input id="Id" name="Id" style="display: none" type="number" value="@Model.Id"/>
+            </td>
+        </tr>
+       
+        <tr>
+            <td>国际码</td>
+            <td>
+                @Html.TextBoxFor(c=>c.CodeNo)
+            </td>
+        </tr>
+
+        <tr>
+            <td>简拼</td>
+            <td>
+                @Html.TextBoxFor(c=>c.PinYin)
+            </td>
+        </tr>
+
+    </table>
+
+</form>
+
+<div id="selcet_type_dlg" dlgtitle="选择类别" style="display: none;padding:8px; ">
+    <iframe id="selcet_type_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+        @*动态加载*@
+    </iframe>
+</div>

@@ -1,0 +1,47 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>管理尽责度</title>
+        <style>
+            .item {
+                color: #1CA6E7;font-size: 18px;margin-left: 5px;margin-right: 5px;
+            }
+            .item1 {
+                color: #8BA216;font-size: 18px;margin-left: 5px;margin-right: 5px;font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            目前登记患者<span style="color: #FF8A00;font-size: 24px;font-weight: bold;margin-left: 5px;margin-right: 5px;">@ViewData["PatientTotal"]</span>人
+            ，参加随访<span class="item1">@ViewData["FollowUpTotal"]</span>人，其中
+        </div>
+        <div>
+            <table style="margin-left: 10px;">
+                <tr>
+                    <td>正常随访</td>
+                    <td><span class="item">@ViewData["FollowUp_Normal"]</span>人</td>
+                </tr>
+                <tr>
+                    <td>暂时离开超过六个月</td>
+                    <td><span class="item">@ViewData["FollowUp_Pause"]</span>人</td>
+                </tr>
+                <tr>
+                    <td>拒绝随访</td>
+                    <td><span class="item">@ViewData["FollowUp_Refuse"]</span>人</td>
+                </tr>
+                <tr>
+                    <td>失访</td>
+                    <td><span class="item">@ViewData["FollowUp_Off"]</span>人</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

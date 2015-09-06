@@ -1,0 +1,26 @@
+﻿
+@model int
+
+@{
+    Layout = null;
+
+    string strColor = "progress-red";
+    if (Model >= 50)
+    {
+        strColor = "progress-blue";
+    }
+    if (Model >= 100)
+    {
+        strColor = "progress-green";
+    }
+
+    string strValue = String.Format("{0}%", Model);
+}
+
+<div class="progress @strColor">
+    <span style="width: @strValue;">
+        <b>
+            @strValue
+        </b>
+    </span>
+</div>

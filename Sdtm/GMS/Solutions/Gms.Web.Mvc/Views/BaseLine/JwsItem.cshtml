@@ -1,0 +1,94 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Health.MedicalHistory
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+ 
+    @Html.HiddenFor(c=>c.Id)
+    <input id="TypeFlag" value='@ViewData["TypeFlag"]' style="display: none;"/>
+    <div id="toolbar" style="padding: 5px; height: auto">
+        <div>
+            部位：<input id="Name" class="messager-input" style="width: 80px" />
+            时间：<input id="DateTime" class="easyui-datebox" />
+            病理诊断：<input id="Note" class="messager-input" style="width: 80px" />
+            <a href="#" id="btnAdd" class="easyui-linkbutton" iconcls="icon-add">添加</a>
+        </div>
+    </div>
+     
+    <table id="item_list" url="/BaseLine/JwsItemList?mid=@Model.Id&hType=@ViewData["TypeFlag"]" >
+            
+    </table>
+    
+
+</body>
+
+<script type="text/javascript">
+    $('#item_list').datagrid({
+        toolbar: '#toolbar',
+        pagination: false,
+        singleSelect: true,
+        columns: [
+            [
+                { field: 'Name', title: '部位', width: 100 },
+                {
+                    field: 'DateTimeString', title: '时间', width: 100
+                },
+                { field: 'Note', title: '病理诊断', width: 100 },
+                {
+                    field: 'Caozuo',
+                    title: '操作',
+                    width: 100,
+                    formatter: function (value, row, index) {
+
+                        return '<a href="#" class="btn-small">删除</a>';
+                    }
+                }
+            ]
+        ],
+        onClickCell: function (index, field, value) {
+
+            if (field != "Caozuo") {
+                return false;
+            }
+
+            var rows = $(this).datagrid('getRows');
+            var row = rows[index];
+            if (row == null)
+                return false;
+
+            var medicalHisId = $("#Id").val();
+            var typeFlag = $('#TypeFlag').val();
+            $.post("/BaseLine/JwsItemDelete", { mid: medicalHisId,type:typeFlag, id: row.Id }, function (data) {
+                if (data.success) {
+                    $('#item_list').datagrid("reload");
+                } else {
+                    alert(data);
+                }
+            }, "json");
+
+            return true;
+        }
+    });
+
+    $("#btnAdd").click(function() {
+        var medicalHisId = $("#Id").val();
+        var name = $("#Name").val();
+        var note = $("#Note").val();
+        var dateTime = $('#DateTime').datebox('getValue');
+        var typeFlag = $('#TypeFlag').val();
+
+        $.post("/BaseLine/JwsItemAdd", { mid: medicalHisId, hType: typeFlag, name: name, note: note, datetime: dateTime }, function (data) {
+            if (data.success) {
+                $('#item_list').datagrid("reload");
+            } else {
+                alert(data);
+            }
+        }, "json");
+    });
+</script>
+
+
+

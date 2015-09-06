@@ -1,0 +1,67 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Patient
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+ 
+    <input id="PatientId" value="@Model.Id" style="display: none;"/>
+
+    <table id ="bldlg" url="/BaseLine/TableDatas/@Model.Id"></table>
+
+    <table style="font-size: 12px;">
+        <tr>
+            <td style="width: 200px;">
+                建立日期：
+                <span id="createtime" style="font-weight: bold;">
+                </span>
+            </td>
+            
+            <td style="width: 200px;">
+                责任医生：
+                <span id="doctor-name" style="font-weight: bold;">
+                </span>
+            
+                <a href="#1" class="btn-small change-doctor">修改</a>
+            </td>
+            <td style="width: 200px;">
+                填表人：
+                <span id="practicedoctor-name" style="font-weight: bold;">
+                </span>
+            
+                @*<a href="#2" class="btn-small change-doctor">修改</a>*@
+            </td>
+        </tr>
+
+    </table>
+
+    <div id="editdlg"></div> 
+
+    <div id="frameeditdlg" style="padding:10px;">
+        <iframe frameborder="no" style='width: 100%;height:100%;border: none;'></iframe>
+    </div>    
+    
+    <div id="selcet_doctor_dlg" dlgtitle="选择医生" style="display: none;padding:8px;">
+        <iframe id="selcet_doctor_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+            @*动态加载*@
+        </iframe>
+    </div>
+    
+    <div id="selcet_area_dlg" dlgtitle="选择地区" style="display: none;padding:8px;">
+    <iframe id="selcet_area_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+        @*动态加载*@
+    </iframe>
+</div>
+
+</body>
+<script type="text/javascript" src="@Url.Content("/Scripts/FollowUp/BaseLine.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        BaseLine.Init();
+    });
+</script>
+
+
+

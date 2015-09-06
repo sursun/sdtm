@@ -1,0 +1,51 @@
+﻿
+@using Gms.Common
+@model Gms.Domain.Health.FamilyHistory
+
+@{
+    Layout = null;
+}
+
+@*<fieldset>
+    <legend>
+        糖尿病相关家族病史
+    </legend>*@
+
+<form method="post" action="/BaseLine/JzsSave">
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+    <table class="form_table" style="width:100%;">
+        <tr>
+            <td class="td-label w-i-20">父亲</td>
+            <td>
+                @Html.DropDownListFor(c=>c.Father)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">母亲</td>
+            <td>
+                @Html.DropDownListFor(c=>c.Mother)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">兄弟姐妹</td>
+            <td>
+                @Html.TextBoxFor(c=>c.SiblingSick,new{style="width: 40px;"})
+                （除本人外患糖尿病人数）/
+                @Html.TextBoxFor(c=>c.Sibling,new{style="width: 40px;"})
+                （总数） 
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">子女</td>
+            <td>
+                @Html.TextBoxFor(c=>c.ChildrenSick,new{style="width: 40px;"})
+                （患糖尿病人数）/
+                @Html.TextBoxFor(c=>c.Children,new{style="width: 40px;"})
+                （总数） 
+            </td>
+        </tr>
+        
+    </table>
+    
+</form>
+@*</fieldset>*@

@@ -1,0 +1,182 @@
+﻿@using Gms.Domain
+@using Microsoft.Web.Mvc.Html
+@model Gms.Domain.Health.EvaluationScale
+@{
+    Layout = null;
+    
+    String strData = "";
+
+    if (Model.Answers != null)
+    {
+        strData = Model.Answers;
+    }
+
+    IList<int> listData = new List<int>();
+    if (strData.Length > 2)
+    {
+        listData = strData.Split('|').Select(c => (c.Length>0?int.Parse(c):0)).ToList();
+    }
+    if (listData.Count < 20)
+    {
+        for (int i = listData.Count; i < 20; i++)
+        {
+            listData.Add(0);
+        }
+    }
+
+    String[,] arrAsk =
+    {
+        {"现在是那一年？", "1"},
+        {"现在是什么季节？", "4"},  
+        {"现在是几月份？","1"},  
+        {"今天是几号？","1"},  
+        {"今天是星期几？","4"},  
+        {"我们现在是在哪个国家？","1"},  
+        {"我们现在是在哪个城市？","1"},  
+        {"我们现在是在哪个城区（或什么路、哪一个省）？","1"},  
+        {"（这里是什么地方？）这里是哪个医院？ ","4"},  
+        {"这里是第几层楼？（你是哪一床？）","1"},  
+        {"我告述你三样东西，在我说完之后请你重复一遍它们的名字，“树”、“钟”、“汽车”。<br/>请你记住，过一会儿我还要你回忆出它们的名字来。 ","1"},  
+        {"请你算算下面几组算术：<br/>100―7=？<br/>93―7=？<br/>86―7=？<br/>79―7=？<br/>72―7=？","1"},  
+        {"现在请您说出刚才我让你记住的那三种东西的名字？","4"},  
+        {"（出示手表）这个东西叫什么？","1"},  
+        {"（出示铅笔）这个东西叫什么？ ","1"},  
+        {"请你跟我说“如果、并且、但是”","1"},  
+        {"我给你一张纸，请你按我说的去做，现在开始：“用左/右手（未受累侧）拿着这张纸”；“用（两只）手将它对折起来”“把纸放在你的左腿上”","4"},  
+        {"请你念念这句话，并按上面的意思去做。“闭上你的眼睛”","1"},  
+        {"请你给我写一个完整的句子","4"},  
+        {"（出示图案）请你按这个样子把它画下来。","1"}
+    };
+    
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("/Content/evascale.css")"/>   
+
+<form id="formScale" method="post" action="/Health/EvaScaleSaveOrUpdate">
+    
+    @Html.TextBoxFor(c=>c.Id,new {style="display: none"})
+    @Html.TextBoxFor(c=>c.Patient.Id,new {style="display: none"})
+    @Html.TextBoxFor(c=>c.ScaleType,new {style="display: none"})
+    
+    <div style="text-align: center;background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+        <span style="font-size: 16px;font-weight: bold;">简易智能状态评定表MMSE</span>
+        
+        <p>记录日期:@Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})</p>
+    
+    </div>
+
+    <table class="scaletable">
+        
+        <thead>
+            <tr>
+                <td style="width:40px;">题号</td>
+                <td style="width:460px;">检查内容</td>
+                <td style="width:90px;">没有或很少时间</td>
+                <td style="width:65px;">小部分时间</td>
+                <td style="width:65px;">相当多时间</td>
+                <td style="width:115px;">绝大部分或全部时间</td>
+                <td style="width:50px;">得分</td>   
+            </tr>
+        </thead>
+        <tbody>
+            
+                
+            @{
+                int nIndex = -1;
+
+                String strName = "";
+
+                int nCount = arrAsk.GetLength(0);
+
+                while (nIndex < nCount-1)
+                {
+                    nIndex++;
+                    strName = String.Format("scale_ques_{0}", nIndex);
+
+                    <tr>
+                        <td>
+                            @(nIndex + 1)
+                        </td>
+                        <td >
+                                
+                            @MvcHtmlString.Create(arrAsk[nIndex, 0])
+                        </td>
+
+                        @if (arrAsk[nIndex, 1] == "1")
+                        {
+                            for (int i = 1; i <= 4; i++)
+                            {
+                                if (listData[nIndex] == i)
+                                {
+                                    <td >
+                                        @Html.RadioButton(strName, i, true)@i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td >
+                                        @Html.RadioButton(strName, i, false)@i
+                                    </td>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 4; i > 0; i--)
+                            {
+                                if (listData[nIndex] == i)
+                                {
+                                    <td >
+                                        @Html.RadioButton(strName, i, true)@i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td >
+                                        @Html.RadioButton(strName, i, false)@i
+                                    </td>
+                                }
+                            }
+                        }
+
+                        <td style="width: 46px;">
+                            <input name="scaleresult" style="width: 40px;" value="@listData[nIndex]"/>
+                        </td>
+
+                    </tr>
+
+                }
+            }
+                
+
+            <tr>
+                <td>&emsp;</td>
+                <td>
+                    <b>总分</b>
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    <input name="scaletotal" style="width: 40px;" value="@Model.Result"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</form>
+<div style="background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+    <span>
+        文盲小于17分、小学小于20分、中学以上小于24分为痴呆。20-26 轻度痴呆，10－19 中度痴呆，10以下严重痴呆。
+    </span>
+</div>
+  

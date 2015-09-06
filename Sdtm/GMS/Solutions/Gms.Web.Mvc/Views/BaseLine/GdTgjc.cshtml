@@ -1,0 +1,247 @@
+﻿
+@using System.Collections
+@using Gms.Common
+@model GdTgjcModel
+
+@{
+    Layout = null;
+}
+
+<form method="post" action="/BaseLine/GdTgjcSave">
+    
+    <input name="GdPhysical.Id" type="text" style="display: none" value="@Model.GdPhysical.Id">
+    <input name="BloodRt.Id" type="text" style="display: none" value="@Model.BloodRt.Id">
+
+    <fieldset>
+        <legend>
+            体格检查
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">体重</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.GdPhysical.Weight,new{style="width: 40px;"})Kg
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">血压BP</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.GdPhysical.BloodPressureHigh,new{style="width: 40px;"})
+                    /
+                    @Html.TextBoxFor(c=>c.GdPhysical.BloodPressureLow,new{style="width: 40px;"})
+                    mmHg
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">酮体</td>
+                <td>
+                    @{
+                        IList<OptionItem> options = new List<OptionItem>();
+                        options.Add(new OptionItem() {Text = "阴性", Value = 0});
+                        options.Add(new OptionItem() {Text = "+", Value = 1});
+                        options.Add(new OptionItem() {Text = "++", Value = 2});
+                        options.Add(new OptionItem() {Text = "+++", Value = 3});
+                    }
+                    @Html.DropDownList(options,"GdPhysical.Ketone",Model.GdPhysical.Ketone,null)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label">尿碘</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.GdPhysical.UrineIdoine,new{style="width: 40px;"})
+                    ug/L，（孕周
+                    @Html.TextBoxFor(c=>c.GdPhysical.UrineIdoineWeek,new{style="width: 40px;"})
+                    w）
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">随机血糖（当天）</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.GdPhysical.Rbg,new{style="width: 40px;"})
+                    mmol/L，餐后2小时血糖
+                    @Html.TextBoxFor(c=>c.GdPhysical.Pbg,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">50g葡萄糖耐量实验</td>
+                <td>
+                    空腹血糖
+                    @Html.TextBoxFor(c=>c.GdPhysical.Fbg50,new{style="width: 40px;"})
+                    mmol/L，1小时血糖
+                    @Html.TextBoxFor(c=>c.GdPhysical.Pbg1H50,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">75g葡萄糖耐量实验</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                空腹血糖
+                                @Html.TextBoxFor(c=>c.GdPhysical.Fbg75,new{style="width: 40px;"})
+                                mmol/L，1小时血糖
+                                @Html.TextBoxFor(c=>c.GdPhysical.Pbg1H75,new{style="width: 40px;"})
+                                mmol/L，2小时血糖
+                                @Html.TextBoxFor(c=>c.GdPhysical.Pbg2H75,new{style="width: 40px;"})
+                                mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                胰岛素Ins:0’
+                                @Html.TextBoxFor(c=>c.GdPhysical.Ins,new{style="width: 40px;"})
+                                Iu/ml，60’
+                                @Html.TextBoxFor(c=>c.GdPhysical.Ins60,new{style="width: 40px;"})
+                                Iu/ml，120’
+                                @Html.TextBoxFor(c=>c.GdPhysical.Ins120,new{style="width: 40px;"})
+                                Iu/ml 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">糖化血红蛋白（HbA1c）</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.GdPhysical.HbA1c,new{style="width: 40px;"})
+                    %，（孕周
+                    @Html.TextBoxFor(c=>c.GdPhysical.HbA1cWeek,new{style="width: 40px;"})
+                    w）
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">肝功能</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                ALT
+                                @Html.TextBoxFor(c=>c.BloodRt.Alt,new{style="width: 40px;"})
+                                Iu/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                AST
+                                @Html.TextBoxFor(c=>c.BloodRt.Ast,new{style="width: 40px;"})
+                                Iu/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                GGT
+                                @Html.TextBoxFor(c=>c.BloodRt.Ggt,new{style="width: 40px;"})
+                                Iu/L
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">肾功能</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                BUN
+                                @Html.TextBoxFor(c=>c.BloodRt.Bun,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SCR
+                                @Html.TextBoxFor(c=>c.BloodRt.Scr,new{style="width: 40px;"})
+                                umol/L
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">血脂</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                TG
+                                @Html.TextBoxFor(c=>c.BloodRt.Tg,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TC
+                                @Html.TextBoxFor(c=>c.BloodRt.Tc,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                HDL
+                                @Html.TextBoxFor(c=>c.BloodRt.Hdl,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                LDL
+                                @Html.TextBoxFor(c=>c.BloodRt.LDL,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label">甲状腺功能</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                TT<sub>3</sub>
+                                @Html.TextBoxFor(c=>c.GdPhysical.TT3,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TT<sub>4</sub>
+                                @Html.TextBoxFor(c=>c.GdPhysical.TT4,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                FT<sub>3</sub>
+                                @Html.TextBoxFor(c=>c.GdPhysical.FT3,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                FT<sub>4</sub>
+                                @Html.TextBoxFor(c=>c.GdPhysical.FT4,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TSH
+                                @Html.TextBoxFor(c=>c.GdPhysical.TSH,new{style="width: 40px;"})
+                                mmol/L
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+    
+    </fieldset>
+  
+</form>

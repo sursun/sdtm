@@ -1,0 +1,144 @@
+﻿@model Gms.Domain.Patient
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>各指标曲线图</title>
+        <link rel="stylesheet" href="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/styles/jqx.base.css")" type="text/css" />
+        <script type="text/javascript" src="@Url.Content("/Scripts/jquery-1.7.2.min.js")"></script> 
+        <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxcore.js")"></script>
+        <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdata.js")"></script>
+        <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdraw.js")"></script>
+        <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxchart.core.js")"></script>
+    </head>
+    <body>
+        <div id='chartContainer1' style="width:850px; height:350px"></div>
+        <div id='chartContainer2' style="width:850px; height:350px"></div>
+        <div id='chartContainer3' style="width:850px; height:350px"></div>
+
+    </body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source1 =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'Date' },
+                    { name: 'Param1' }
+                ],
+                url: '/FollowUp/GetChartDatas?type=1&patientid=@Model.Id'
+            };
+            var source2 =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'Date' },
+                    { name: 'Param1' },
+                    { name: 'Param2' }
+                ],
+                url: '/FollowUp/GetChartDatas?type=2&patientid=@Model.Id'
+            };
+            var source3 =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'Date' },
+                    { name: 'Param1' }
+                ],
+                url: '/FollowUp/GetChartDatas?type=3&patientid=@Model.Id'
+            };
+
+            var dataAdapter1 = new $.jqx.dataAdapter(source1, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('加载失败 "' + source.url + '" : ' + error); } });
+            var dataAdapter2 = new $.jqx.dataAdapter(source2, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('加载失败 "' + source.url + '" : ' + error); } });
+            var dataAdapter3 = new $.jqx.dataAdapter(source3, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('加载失败 "' + source.url + '" : ' + error); } });
+
+            var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+            // prepare jqxChart settings
+            var settings = {
+                title: "糖化血红蛋白（%）",
+                description: " ",
+                enableAnimations: true,
+                showLegend: true,
+                padding: { left: 10, top: 5, right: 10, bottom: 5 },
+                titlePadding: { left: 50, top: 0, right: 0, bottom: 10 },
+                source: dataAdapter1,
+                xAxis:
+                {
+                    dataField: 'Date',
+                    formatFunction: function (value) {
+                        return value.getFullYear() + '年' + months[value.getMonth()]+ value.getDate() + "日";
+                    },
+                    type: 'date',
+                    baseUnit: 'month',
+                    valuesOnTicks: true,
+                    //minValue: '01-01-2014',
+                    //maxValue: '01-01-2015',
+                    tickMarks: {
+                        visible: true,
+                        //interval: 1,
+                        color: '#BCBCBC'
+                    },
+                    //unitInterval: 1,
+                    gridLines: {
+                        visible: true,
+                        interval: 3,
+                        color: '#BCBCBC'
+                    },
+                    labels: {
+                        angle: -45,
+                        rotationPoint: 'topright',
+                        offset: { x: 0, y: -25 }
+                    }
+                },
+                valueAxis:
+                {
+                    visible: true,
+                    title: { text: '' },
+                    tickMarks: { color: '#BCBCBC' }
+                },
+                colorScheme: 'scheme04',
+                seriesGroups:
+                    [
+                        {
+                            type: 'line',
+                            series: [
+                                    { dataField: 'Param1', displayText: 'HbA1c', symbolType: 'square',emptyPointsDisplay:"connect" }
+                            ]
+                        }
+                    ]
+            };
+
+            $('#chartContainer1').jqxChart(settings);
+
+            settings.title = "血压（mmHg）";
+            settings.source = dataAdapter2;
+            settings.seriesGroups = [{
+                type: 'line',
+                series: [
+                        { dataField: 'Param1', displayText: '收缩压', symbolType: 'square', emptyPointsDisplay: "connect" },
+                        { dataField: 'Param2', displayText: '舒张压', symbolType: 'square', emptyPointsDisplay: "connect" }
+                ]
+            }];
+            $('#chartContainer2').jqxChart(settings);
+
+            settings.title = "血脂（mmol/L）";
+            settings.source = dataAdapter3;
+            settings.seriesGroups = [{
+                type: 'line',
+                series: [
+                        { dataField: 'Param1', displayText: 'LDL', symbolType: 'square', emptyPointsDisplay: "connect" }
+                ]
+            }];
+            $('#chartContainer3').jqxChart(settings);
+
+        });
+    </script>
+
+</html>

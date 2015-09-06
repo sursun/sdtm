@@ -1,0 +1,78 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.FollowUp.FollowUpInfo
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+<html>
+    
+    <head> 
+        <title>随访信息</title> 
+    </head> 
+
+    <body>
+        
+        <div id="followupinfo_content">
+        
+    
+            <table class="form_table" style="width:100%;">
+                <tr>
+                    <td >
+                        下次随访时间:
+                        <br/>
+                        @if (Model != null)
+                        {
+                            <b>@Model.FollowUpDate.ToString("yyyy-MM-dd")</b>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        随访形式:
+                        <br/>
+                        @if (Model != null)
+                        {
+                            <b>@Model.FollowUpWay</b>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        随访备注：
+                        @if (Model != null)
+                        {
+                            @Model.Note
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        最后一次修改人：
+                        @if (Model != null && Model.Doctor!= null)
+                        {
+                            <b>@Model.Doctor.RealName</b>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-label">
+                        @if (Model != null)
+                        {
+                            <a href="#@Model.Patient.Id" class="setfollowupinfo btn-small">设置随访</a>
+                        }
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
+    </body>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.parent.refreshFollowupInfo();
+        });
+    </script>
+
+    
+</html>

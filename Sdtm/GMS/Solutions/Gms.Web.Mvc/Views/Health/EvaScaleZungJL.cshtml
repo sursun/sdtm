@@ -1,0 +1,184 @@
+﻿@using Gms.Domain
+@using Microsoft.Web.Mvc.Html
+@model Gms.Domain.Health.EvaluationScale
+@{
+    Layout = null;
+    
+    String strData = "";
+
+    if (Model.Answers != null)
+    {
+        strData = Model.Answers;
+    }
+
+    IList<int> listData = new List<int>();
+    if (strData.Length > 2)
+    {
+        listData = strData.Split('|').Select(c => (c.Length>0?int.Parse(c):0)).ToList();
+    }
+    if (listData.Count < 20)
+    {
+        for (int i = listData.Count; i < 20; i++)
+        {
+            listData.Add(0);
+        }
+    }
+
+    String[,] arrAsk =
+    {
+        {"我感到比往常更加神经过敏和焦虑", "1"},
+        {"我无缘无故地感到担心", "1"},  
+        {"我容易心烦意乱或感到恐慌","1"},  
+        {"我感到我的身体好象被分成几块,支离破碎","1"},  
+        {"我感到事事都很顺利,不会有倒霉的事发生","4"},  
+        {"我的四肢抖动和震颤","1"},  
+        {"我因头痛、颈痛和背痛而烦恼","1"},  
+        {"我感到无力且容易疲劳","1"},  
+        {"我感到很平静，能安静坐下来","4"},  
+        {"我感到我的心跳较快","1"},  
+        {"我因阵阵的眩晕而不舒服","1"},  
+        {"我有阵阵要昏倒的感觉","1"},  
+        {"我呼吸时进气和出气都不费力","4"},  
+        {"我的手指和脚趾感到麻木和刺痛","1"},  
+        {"我因胃痛和消化不良而苦恼","1"},  
+        {"我必须时常排尿","1"},  
+        {"我的手经常温暖而干燥","4"},  
+        {"我觉得脸红发烧发红","1"},  
+        {"我容易入睡,晚上睡得很好","4"},  
+        {"我做恶梦","1"}
+    };
+    
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("/Content/evascale.css")"/>   
+
+<form id="formScale" method="post" action="/Health/EvaScaleSaveOrUpdate">
+    
+    @Html.TextBoxFor(c=>c.Id,new {style="display: none"})
+    @Html.TextBoxFor(c=>c.Patient.Id,new {style="display: none"})
+    @Html.TextBoxFor(c=>c.ScaleType,new {style="display: none"})
+    
+    <div style="text-align: center;background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+        <span style="font-size: 16px;font-weight: bold;">Zung焦虑自我评价表</span>
+        
+        <p>记录日期:@Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})</p>
+    
+    </div>
+    
+    <table class="scaletable">
+        <thead>
+            <tr>
+                <td style="width:40px;">题号</td>
+                <td style="width:460px;">提问内容</td>
+                <td style="width:90px;">没有或很少时间</td>
+                <td style="width:65px;">小部分时间</td>
+                <td style="width:65px;">相当多时间</td>
+                <td style="width:115px;">绝大部分或全部时间</td>
+                <td style="width:50px;">得分</td>   
+            </tr>
+        </thead>
+        <tbody>
+            
+                
+            @{
+                int nIndex = -1;
+
+                String strName = "";
+
+                int nCount = arrAsk.GetLength(0);
+
+                while (nIndex < nCount-1)
+                {
+                    nIndex++;
+                    strName = String.Format("scale_ques_{0}", nIndex);
+
+                    <tr>
+                        <td style="width: 36px;">
+                            @(nIndex + 1)
+                        </td>
+                        <td style="width: 396px;">
+                            @arrAsk[nIndex, 0]
+                        </td>
+
+                        @if (arrAsk[nIndex, 1] == "1")
+                        {
+                            for (int i = 1; i <= 4; i++)
+                            {
+                                if (listData[nIndex] == i)
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, true)@i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, false)@i
+                                    </td>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 4; i > 0; i--)
+                            {
+                                if (listData[nIndex] == i)
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, true)@i
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="width: 46px;">
+                                        @Html.RadioButton(strName, i, false)@i
+                                    </td>
+                                }
+                            }
+                        }
+
+                        <td style="width: 46px;">
+                            <input name="scaleresult" style="width: 40px;" value="@listData[nIndex]"/>
+                        </td>
+
+                    </tr>
+
+                }
+            }
+                
+
+            <tr>
+                <td>&emsp;</td>
+                <td>
+                    <b>总分</b>
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    &emsp;
+                </td>
+                <td>
+                    <input name="scaletotal" style="width: 40px;" value="@Model.Result"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</form>
+<div style="background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+    <span>
+        主要统计指标为总分。把 20 题得分相加为粗分，把粗分乘以 1.25 ，四舍五入取整数，即得到标准分。焦虑评定的分界值是46分,正常。46-50分,轻度焦虑, 50分,焦虑症状,分值越高，症状越严重。
+    </span>
+    <br/>
+    <span>
+        原始分：20－44：正常； 45－59：轻到中度焦虑； 60－74： 明显到严重焦虑； 75－80：极度焦虑
+    </span>
+</div>
+  

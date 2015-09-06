@@ -1,0 +1,568 @@
+﻿
+@using System.Collections
+@using Gms.Common
+@using Gms.Domain
+@model BfzModel
+
+@{
+    Layout = null;
+}
+
+<form method="post" action="/BaseLine/BfzSave">
+    
+    <input name="Eye.Id" type="text" style="display: none" value="@Model.Eye.Id">
+    <input name="Legs.Id" type="text" style="display: none" value="@Model.Legs.Id">
+    <input name="UnClassified.Id" type="text" style="display: none" value="@Model.UnClassified.Id">
+
+    <fieldset>
+        <legend>
+            眼睛检查
+        </legend>
+    
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">检查日期</td>
+                <td>
+                    <input name="Eye.ExamDate" type="text" class="easyui-datebox" value="@Model.Eye.ExamDate">
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label">眼睛检查</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>视力</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Eye.VisionL,new{style="width: 40px;"})
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Eye.VisionR,new{style="width: 40px;"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>眼底检查</td>
+                            <td>
+                                @{
+                                    IList<OptionItem> options = new List<OptionItem>();
+                                    options.Add(new OptionItem() { Text = "眼底镜", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "眼底摄片", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "荧光造影", Value = 2 });
+                                }
+                                @Html.DropDownList(options,"Eye.Fundus",Model.Eye.Fundus,null)
+                            </td>
+                            <td>&emsp;</td>
+                        </tr>
+                        <tr>
+                            <td>白内障</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.CataractL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.CataractR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>青光眼</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.GlaucomaL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.GlaucomaR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>黄斑病</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.MaculopathyL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.MaculopathyR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>视网膜病变</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.RetinopathyL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.RetinopathyR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>激光治疗</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.LaserL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.LaserR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>其他眼疾</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.OtherL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Eye.OtherR)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        
+        </table>
+    
+    </fieldset>
+    
+    <fieldset>
+        <legend>
+            下肢血管及神经病变筛查
+        </legend>
+        
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">足部检查</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>皮肤颜色</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() {Text = "正常", Value = 0});
+                                    options.Add(new OptionItem() {Text = "苍白", Value = 1});
+                                    options.Add(new OptionItem() {Text = "暗紫", Value = 2});
+                                    options.Add(new OptionItem() {Text = "未查", Value = 3});
+                                }
+                                @Html.DropDownList(options,"Legs.ColorL",Model.Legs.ColorL,null)
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.ColorR",Model.Legs.ColorR,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>霉菌感染</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "否", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "灰甲", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "脚气", Value = 2 });
+                                    options.Add(new OptionItem() { Text = "未查", Value = 3 });
+                                }
+                                @Html.DropDownList(options,"Legs.MouldL",Model.Legs.MouldL,null)
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.MouldR",Model.Legs.MouldR,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>胼胝</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Legs.CallusL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Legs.CallusR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>溃疡</td>
+                            <td>
+                                @{
+                                    var selval = (int) YesNoUncheck.是;
+                                    String styleStr = "";
+                                }
+                                
+                                
+                                @Html.DropDownListForEnum(c=>c.Legs.AnabrosisL,"",new{@class="select_show_view",forview="AnabrosisLView",selectval=selval})
+                                @{
+                                    styleStr = Model.Legs.AnabrosisL != YesNoUncheck.是 ? "display: none;" : "";
+                                }
+                                
+                                <span id="AnabrosisLView" style="@styleStr">
+                                    位置：
+                                    @Html.TextBoxFor(c => c.Legs.AnabrosisNameL,new{style="width: 60px;"})
+                                </span>
+                            </td>
+                            <td>
+                                
+                                @Html.DropDownListForEnum(c=>c.Legs.AnabrosisR,"",new{@class="select_show_view",forview="AnabrosisRView",selectval=selval})
+                                @{
+                                    styleStr = Model.Legs.AnabrosisR != YesNoUncheck.是 ? "display: none;" : "";
+                                }
+                                
+                                <span id="AnabrosisRView" style="@styleStr">
+                                    位置：
+                                    @Html.TextBoxFor(c => c.Legs.AnabrosisNameR,new{style="width: 60px;"})
+                                </span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>坏疽</td>
+                            <td>
+                                
+                            
+                            @Html.DropDownListForEnum(c=>c.Legs.GangreneL,"",new{@class="select_show_view",forview="LegsGangreneLView",selectval=selval})
+                            @{
+                                styleStr = Model.Legs.GangreneL != YesNoUncheck.是 ? "display: none;" : "";
+                            }
+                                
+                                <span id="LegsGangreneLView" style="@styleStr">
+                                    位置：
+                                    @Html.TextBoxFor(c => c.Legs.GangreneNameL,new{style="width: 60px;"})
+                                    <br/>性质：
+                                    @{
+                                        options.Clear();
+                                        options.Add(new OptionItem() { Text = "未查", Value = 0 });
+                                        options.Add(new OptionItem() { Text = "干性", Value = 1 });
+                                        options.Add(new OptionItem() { Text = "湿性", Value = 2 });
+                                        options.Add(new OptionItem() { Text = "混合性", Value = 3 });
+                                    }
+                                    @Html.DropDownList(options,"Legs.GangreneTypeL",Model.Legs.GangreneTypeL,null)
+                                </span>
+
+                            </td>
+                            <td>
+                            
+                            @Html.DropDownListForEnum(c=>c.Legs.GangreneR,"",new{@class="select_show_view",forview="LegsGangreneRView",selectval=selval})
+                            @{
+                                styleStr = Model.Legs.GangreneR != YesNoUncheck.是 ? "display: none;" : "";
+                            }
+                                
+                                <span id="LegsGangreneRView" style="@styleStr">
+                                    位置：
+                                    @Html.TextBoxFor(c => c.Legs.GangreneNameR,new{style="width: 60px;"})
+                                    <br/>性质：
+                                    @Html.DropDownList(options,"Legs.GangreneTypeR",Model.Legs.GangreneTypeR,null)
+                                </span>
+
+                            </td>
+                        </tr>
+                  
+                        <tr>
+                            <td>畸形</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Legs.MalformationL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Legs.MalformationR)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>尼龙丝感觉缺失</td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Legs.AnesthesiaL)
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(c=>c.Legs.AnesthesiaR)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">动脉搏动</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>足背动脉</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "存在", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "消失", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "未查", Value = 2 });
+                                }
+                                @Html.DropDownList(options,"Legs.MouldL",Model.Legs.ZubDongmaiL,null)
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.MouldL",Model.Legs.ZubDongmaiR,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>胫后动脉</td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.MouldL",Model.Legs.JinghDongmaiL,null)
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.MouldL",Model.Legs.JinghDongmaiR,null)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">踝/肱动脉压比值(ABI) </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>上肢肱动脉收缩压</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.UpperBaspL,new{style="width: 40px;"})mmHg
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.UpperBaspR,new{style="width: 40px;"})mmHg
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>下肢内踝动脉收缩压</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.XianhAsbpL,new{style="width: 40px;"})mmHg
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.XianhAsbpR,new{style="width: 40px;"})mmHg
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>足背动脉收缩压</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.DpaspL,new{style="width: 40px;"})mmHg
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.DpaspR,new{style="width: 40px;"})mmHg
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ABI 值</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.ABIL,new{style="width: 40px;"})
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.ABIR,new{style="width: 40px;"})
+                            </td>
+                        </tr>
+@*                        <tr>
+                            <td>足趾血压</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.ToeBPL,new{style="width: 40px;"})mmHg
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.ToeBPR,new{style="width: 40px;"})mmHg
+                            </td>
+                        </tr>*@
+@*                        <tr>
+                            <td>TPI 值</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.TPIL,new{style="width: 40px;"})
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.TPIR,new{style="width: 40px;"})
+                            </td>
+                        </tr>*@
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">生物震感阈值(VPT)测量</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>感觉阈值测定</td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.TouchFeelingL,new{style="width: 40px;"})
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c => c.Legs.TouchFeelingR,new{style="width: 40px;"})
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td>温度觉</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "正常", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "异常", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "未查", Value = 2 });
+                                }
+                                @Html.DropDownList(options,"Legs.ThermalSenseL",Model.Legs.ThermalSenseL,null)
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.ThermalSenseR",Model.Legs.ThermalSenseR,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>下肢血管超声</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "正常", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "斑块", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "狭窄", Value = 2 });
+                                    options.Add(new OptionItem() { Text = "未查", Value = 3 });
+                                }
+                                @Html.DropDownList(options,"Legs.LivuL",Model.Legs.LivuL,null)
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"Legs.LivuR",Model.Legs.LivuR,null)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            其他筛查
+        </legend>
+        
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">心电图</td>
+                <td>
+                    @{
+                        options.Clear();
+                        options.Add(new OptionItem() { Text = "正常", Value = 0 });
+                        options.Add(new OptionItem() { Text = "心律失常", Value = 1 });
+                        options.Add(new OptionItem() { Text = "ST异常", Value = 2 });
+                        options.Add(new OptionItem() { Text = "传导阻滞", Value = 3 });
+                        options.Add(new OptionItem() { Text = "陈旧性心梗", Value = 4 });
+                        options.Add(new OptionItem() { Text = "其他", Value = 5 });
+                        options.Add(new OptionItem() { Text = "未查", Value = 6 });
+                    }
+                    @Html.DropDownList(options,"UnClassified.ElectroCardiogram",Model.UnClassified.ElectroCardiogram,null)
+                    @Html.TextBoxFor(c=>c.UnClassified.ElectroCardiogramInfo)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">颈动脉血管超声</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "正常", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "斑块", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "狭窄", Value = 2 });
+                                    options.Add(new OptionItem() { Text = "未查", Value = 3 });
+                                }
+                                @Html.DropDownList(options,"UnClassified.CarotidUltraL",Model.UnClassified.CarotidUltraL,null)
+                                @Html.TextBoxFor(c=>c.UnClassified.CarotidUltraAreaL,new{style="width: 40px;"})%
+                            </td>
+                            <td>
+                                @Html.DropDownList(options,"UnClassified.CarotidUltraR",Model.UnClassified.CarotidUltraR,null)
+                                @Html.TextBoxFor(c=>c.UnClassified.CarotidUltraAreaR,new{style="width: 40px;"})%
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>其他</td>
+                            <td colspan="2">
+                                @Html.TextAreaFor(c=>c.UnClassified.CarotidUltraInfo)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">头颅CT</td>
+                <td>
+                    @{
+                        options.Clear();
+                        options.Add(new OptionItem() { Text = "正常", Value = 0 });
+                        options.Add(new OptionItem() { Text = "腔隙性梗塞", Value = 1 });
+                        options.Add(new OptionItem() { Text = "脑血栓", Value = 2 });
+                        options.Add(new OptionItem() { Text = "脑出血", Value = 3 });
+                        options.Add(new OptionItem() { Text = "未查", Value = 4 });
+                    }
+                    @Html.DropDownList(options,"UnClassified.HeadCT",Model.UnClassified.HeadCT,null)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">B超</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>&emsp;</td>
+                            <td>左</td>
+                            <td>右</td>
+                        </tr>
+                        <tr>
+                            <td>肾脏</td>
+                            <td>
+                                长
+                                @Html.TextBoxFor(c=>c.UnClassified.KidneyLongL,new{style="width: 40px;"})
+                                ×宽
+                                @Html.TextBoxFor(c=>c.UnClassified.KidneyWidthL,new{style="width: 40px;"})
+                                ×高
+                                @Html.TextBoxFor(c=>c.UnClassified.KidneyHeightL,new{style="width: 40px;"})
+                            </td>
+                            <td>
+                                长
+                                @Html.TextBoxFor(c=>c.UnClassified.KidneyLongR,new{style="width: 40px;"})
+                                ×宽
+                                @Html.TextBoxFor(c=>c.UnClassified.KidneyWidthR,new{style="width: 40px;"})
+                                ×高
+                                @Html.TextBoxFor(c=>c.UnClassified.KidneyHeightR,new{style="width: 40px;"})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>脂肪肝</td>
+                            <td colspan="2">
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "未查", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "无", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "有", Value = 2 });
+                                }
+                                @Html.DropDownList(options,"UnClassified.FattyLiver",Model.UnClassified.FattyLiver,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>其他</td>
+                            <td colspan="2">
+                                @Html.TextAreaFor(c=>c.UnClassified.BOther)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">其他检查</td>
+                <td>
+                    @Html.TextAreaFor(c=>c.UnClassified.OtherInfo)
+                </td>
+            </tr>
+           
+        </table>
+
+    </fieldset>
+
+</form>

@@ -1,0 +1,80 @@
+﻿
+@using Gms.Domain
+@model Gms.Domain.DiabetesType
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+
+    <div align="center" style="margin-top: 50px;">
+        <div class="easyui-panel" style="width: 400px; height: 280px; padding: 10px; background: #fafafa;">
+            <div style="margin-top: 10px;margin-bottom: 10px; border-bottom: 1px dotted black;">
+                <p style="font-size: larger;font-weight: bold;">请输入患者相关基础信息</p>
+                <p>请输入者认真校对患者信息，一旦入库以下信息不可修改！</p>
+            </div>
+            <form id="PatientAdd" method="POST" action="/Patient/CreateOrUpdate">
+                
+                <input style="display: none;" name="DiabetesType" value="@Model"  />
+           
+                <table>
+                    <tr>
+                        <td>患者姓名：</td>
+                        <td>
+                            <input class="messager-input" name="RealName"  />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>编号：</td>
+                        <td>
+                            <input id="newcodeno" style="display: none;"  value="@ViewData["CodeNo"]" />
+                            <input id="CodeNo" class="messager-input" name="CodeNo" value="@ViewData["CodeNo"]" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>身份证号：</td>
+                        <td>
+                            @*<input class="messager-input" name="IdCard"  />*@
+                            <input class="easyui-validatebox" name="IdCard" validType="IdCard['Sex','#Birthday']" required="required">
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>性别：</td>
+                        <td>
+                            <select id="Sex" name="Sex">
+                                
+                                @if (Model == DiabetesType.普通糖尿病)
+                                {
+                                    <option value="0">男</option>
+                                }
+                                <option value="1">女</option>
+                                
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>出生日期：</td>
+                        <td>
+                            <input type="text" id="Birthday" name="Birthday" class="easyui-datebox" >
+                        </td>
+                    </tr>
+                    
+                </table>
+            </form>
+
+            <div style="padding-top: 10px; margin-top: 10px; text-align: right; border-top: 2px solid brown">
+                <a id="btnSubmit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">添加并填写随访信息</a>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+<script type="text/javascript" src="@Url.Content("/Scripts/IdCard.js")"></script>
+<script type="text/javascript" src="@Url.Content("/Scripts/Patient/Patient.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Patient.Add();
+    });
+</script>

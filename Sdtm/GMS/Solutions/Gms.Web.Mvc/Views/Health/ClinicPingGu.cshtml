@@ -1,0 +1,437 @@
+﻿
+@using System.Collections
+@using Gms.Common
+@using Gms.Domain
+@using Microsoft.Web.Mvc.Html
+@model Gms.Domain.Health.Clinic
+
+@{
+    Layout = null;
+    String strDisplayNone = "display: none";
+    String strDisplay = "";
+}
+
+<form id="formPingGu" method="post" action="/Health/ClinicSaveOrUpdate">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+
+    <fieldset>
+        <legend>
+            临床事件评估
+        </legend>
+    
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">临床事件名称</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Name)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">登记时间</td>
+                <td>
+                    @Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">该个体是否健在</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.IsBreathing)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">该个体目前状态</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.FollowUpStatus)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">自上一次随访至今,</td>
+                <td>
+                    发生轻度低血糖次数
+                    @Html.TextBoxFor(c => c.QingDxtTimes,new{style="width: 40px;"})
+                    次，发生严重低血糖次数
+                    @Html.TextBoxFor(c => c.ZhongDxtTimes,new{style="width: 40px;"})
+                    次
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">是否发生以下急性并发症</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.Dka)DKA
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.Dka ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间:@Html.TextBoxFor(c => c.DkaDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.Hnkc)HNKC
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.Hnkc ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间:@Html.TextBoxFor(c => c.HnkcDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.RuShuanZd)乳酸酸中毒
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.RuShuanZd ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.RuShuanZdDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">
+                    自上次随访后，
+                    <br/>
+                    是否患有以下事件/新诊断的疾病
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td rowspan="3">A</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.XinJiaoTong)心绞痛
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.XinJiaoTong ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.XinJiaoTongDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.XinJiGs)心肌梗死
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.XinJiGs ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.XinJiGsDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.XinShuai)心衰
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.XinShuai ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.XinShuaiDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">B</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.Cabg)CABG
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.Cabg ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.CabgDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.XueGuanZt)血管再通
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.XueGuanZt ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.XueGuanZtDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                            
+                        <tr>
+                            <td rowspan="3">C.脑卒中</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.Tia)TIA
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.Tia ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TiaDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.NaoGengSe)脑梗
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.NaoGengSe ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.NaoGengSeDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.NaoChuXue)脑出血
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.NaoChuXue ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.NaoChuXueDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                            
+                        <tr>
+                            <td>D</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.ZhongLiu)肿瘤
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.ZhongLiu ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.ZhongLiuDateTime,new{@class="easyui-datebox"})
+                                    部位: @Html.TextBoxFor(c => c.ZhongLiuBuWei)
+                                </span>
+                            </td>
+                        </tr>
+                            
+                        <tr>
+                            <td rowspan="3">E</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.TnbShenBing)糖尿病合并肾病
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.TnbShenBing ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TnbShenBingDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.TouXi)透析
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.TouXi ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TouXiDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.YiZhi)移植
+                                </label>
+                            </td>
+                            <td>
+                                    
+                                @{
+                                    strDisplay = Model.YiZhi ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.YiZhiDateTime,new{@class="easyui-datebox"})
+                                </span>
+                           
+                            </td>
+                        </tr>
+                            
+                        <tr>
+                            <td rowspan="3">F</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.TnbSwm)糖尿病视网膜病变
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.TnbSwm ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TnbSwmDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.ShiMing)失明
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.ShiMing ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.ShiMingDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.ShiLiJt)视力减退
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.ShiLiJt ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.ShiLiJtDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                            
+                        <tr>
+                            <td rowspan="3">G</td>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.TnbZu)糖尿病足
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.TnbZu ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TnbZuDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.TnbZuPk)糖尿病足(破口)
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.TnbZuPk ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TnbZuPkDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    @Html.CheckBoxFor(c=>c.TnbZuKy)糖尿病足(溃疡)
+                                </label>
+                            </td>
+                            <td>
+                                @{
+                                    strDisplay = Model.TnbZuKy ? "" : strDisplayNone;
+                                }
+                                <span style="@strDisplay">
+                                    发生时间: @Html.TextBoxFor(c => c.TnbZuKyDateTime,new{@class="easyui-datebox"})
+                                </span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">是否因任何原因入院</td>
+                <td>
+                    
+                    @{
+                        var selval = (int) YesNo.是;
+                        String styleStr = "";
+                    }
+                            
+                            @Html.DropDownListForEnum(c=>c.InHospital,"",new{@class="select_show_view",forview="InHospitalView",selectval=selval})
+                            @{
+                                styleStr = Model.InHospital != YesNo.是 ? "display: none;" : "";
+                            }
+                            <span id="InHospitalView" style="@styleStr">
+                                时间
+                                @Html.TextBoxFor(c => c.InHospitalDateTime,new{@class="easyui-datebox"})，原因
+                                @Html.TextBoxFor(c => c.InHospitalReason) 
+                            </span>
+
+                </td>
+            </tr>
+                
+        
+        </table>
+
+    </fieldset>
+
+</form>
+  

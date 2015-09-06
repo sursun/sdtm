@@ -1,0 +1,290 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.FollowUp.ChanHou
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/FollowUp/ChanHouSave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+    
+    <fieldset>
+        <legend>
+            分娩情况及新生儿管理
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">分娩日期</td>
+                <td>
+                    @Html.TextBoxFor(c => c.ChildbirthDateTime,new{@class="easyui-datebox"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">分娩孕周</td>
+                <td>
+                    @Html.TextBoxFor(c => c.PregnancyWeeks,new{style="width: 40px;"})
+                    周
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">产式</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.BirthType)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">产后24小时出血量</td>
+                <td>
+                    @Html.TextBoxFor(c => c.ChuXueLiang,new{style="width: 40px;"})
+                    ml
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">产时产后并发症</td>
+  
+                <td>
+                    <ul>
+                        @{
+                            var d = new ChanHouBfzFlag().ToDictionary();
+                            foreach (var key in d.Keys)
+                            {
+                                if ((Model.BingFa & key) == key)
+                                {
+                                    <li>
+                                        <input type="checkbox" name="checkForChanHouBfzFlag" value="@key" checked/>
+                                        <label>@d[key]</label>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <input type="checkbox" name="checkForChanHouBfzFlag" value="@key"/>
+                                        <label>@d[key]</label>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </td>
+            </tr>
+
+       
+            <tr>
+                <td class="td-label w-i-20">新生儿体重</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BabyWeight,new{style="width: 40px;"})
+                    g
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">Apgar评分</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Apgar,new{style="width: 40px;"})
+                    g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label w-i-20">新生儿并产症</td>
+                <td>
+                    <ul>
+                        @{
+                            var cd = new BabyBfzFlag().ToDictionary();
+                            foreach (var key in cd.Keys)
+                            {
+                                if ((Model.BabyBing & key) == key)
+                                {
+                                    <li>
+                                        <input type="checkbox" name="checkForBabyBfzFlag" value="@key" checked/>
+                                        <label>@cd[key]</label>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <input type="checkbox" name="checkForBabyBfzFlag" value="@key"/>
+                                        <label>@cd[key]</label>
+                                    </li>
+                                }
+                  
+                            }
+                        }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">出生缺陷</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BabyQuexian,new{style="width: 40px;"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">存活情况</td>
+                <td>
+                    @{
+                        IList<OptionItem> options = new List<OptionItem>();
+                        options.Add(new OptionItem() { Text = "活产", Value = 0 });
+                        options.Add(new OptionItem() { Text = "死胎", Value = 1 });
+                        options.Add(new OptionItem() { Text = "死产", Value = 2 });
+
+                        String strDis = "none";
+                    }
+                    @Html.DropDownList(options,"Breathing",Model.Breathing,null)
+                    @if (Model.Breathing != 0)
+                    {
+                        strDis = "display";
+                    }
+                    <span id="DeathReasonDiv" style="display: @strDis">
+                        
+                        <label style="margin-left: 8px;">情况说明：</label>
+                        @Html.TextBoxFor(c => c.DeathReason)
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">新生儿低血糖</td>
+                <td>
+                    
+                    @Html.DropDownListFor(c=>c.Dxt)
+                    <span id="DxtValue">
+                        @if (Model.Dxt == YesNo.是)
+                        {
+                            <label>血糖:</label>
+                            @Html.TextBoxFor(c => c.DxtValue,new{style="width: 40px;"})
+                            <label>mmol/L</label>
+                        }
+                    </span>
+                    <span class="sub-label">
+                        出生后1~2小时血糖低于2.2mmol/L（40mg/dL）
+                    </span>
+                </td>
+            </tr>
+            
+        </table>
+    
+    </fieldset>
+    
+    <fieldset>
+        <legend>
+            产后6~12周随访记录
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">随访时间</td>
+                <td>
+                    @Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">体重</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Weight,new{style="width: 40px;"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血压（BP）</td>
+                <td>
+                    @Html.TextBoxFor(c => c.BloodPressureHigh,new{style="width: 40px;"})
+                    /
+                    @Html.TextBoxFor(c => c.BloodPressureLow,new{style="width: 40px;"})
+                    mmHg  
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label w-i-20">OGTT</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td style="width: 100px;">&nbsp;</td>
+                            <td style="width: 110px;">0min</td>
+                            <td style="width: 110px;">30min</td>
+                            <td style="width: 110px;">120min</td>
+                        </tr>
+                        <tr>
+                            <td>GLU</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Glu0M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Glu30M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Glu120M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ins</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Insulin0M,new{style="width: 40px;"})uIu/ml 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Insulin30M,new{style="width: 40px;"})uIu/ml  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Insulin120M,new{style="width: 40px;"})uIu/ml  
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">GAD</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.Gad)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">ICA</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.Ica)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">IAA</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.Iaa)
+                </td>
+            </tr>
+            
+        </table>
+    
+    </fieldset>
+    
+    <fieldset>
+        <legend>
+            医疗诊断
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">糖尿病类型</td>
+                <td>
+                    @Html.DropDownListForCommonCode(c=>c.Patient.Diabetes,CommonCodeType.糖尿病类型)
+                </td>
+            </tr>
+        </table>
+    
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+   
+        
+    $('#Breathing').change(function () {
+        var val = $('#Breathing').val();
+
+        if (val > 0) {
+            $('#DeathReasonDiv').show();
+        } else {
+            $('#DeathReasonDiv').hide();
+        }
+    });
+
+
+</script>
+

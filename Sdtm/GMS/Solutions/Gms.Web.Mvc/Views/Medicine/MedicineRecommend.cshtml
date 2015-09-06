@@ -1,0 +1,42 @@
+﻿@model System.Collections.Generic.List<Gms.Domain.Medicine>
+
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    List<int> typeIds = new List<int>();
+    var nTypeId = -1;
+
+    foreach (var medicine in Model)
+    {
+        if (medicine.MedicineType == null)
+        {
+            continue;
+        }
+
+        nTypeId = medicine.MedicineType.Id;
+
+        if (typeIds.Contains(nTypeId))
+        {
+            continue;
+        }
+
+        typeIds.Add(nTypeId);
+
+        <div class="recommend-list">
+            <span>@medicine.MedicineType.Name:</span>
+                
+            @foreach (var itm in Model)
+            {
+                if (itm.MedicineType.Id == nTypeId)
+                {
+                    <a href="#@itm.Id" class="easyui-linkbutton" data-options="plain:true">@itm.NormalName</a>
+                }
+            }
+        </div>
+    
+    }
+
+}

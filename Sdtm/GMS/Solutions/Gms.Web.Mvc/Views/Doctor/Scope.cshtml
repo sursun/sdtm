@@ -1,0 +1,102 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Doctor
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+    
+    <div align="center" style="margin-top: 10px; ">
+        
+        <input id="doctorId"  style="display: none" value="@Model.Id"/>
+        
+        <input id="scopeType"  style="display: none" value="@((int)Model.ScopeType)"/>
+        
+        <div class="easyui-panel" style="margin-bottom: 10px; padding: 10px; " >
+            
+             @{
+                var d = new ScopeType().ToDictionary();
+                 foreach (var key in d.Keys)
+                 {
+                     <div style="width: 400px;">
+                         @if ((int) Model.ScopeType == key)
+                         {
+                             <input type="radio" name="radioForScopeType" value="@key" checked="checked"/>
+                             <label>@d[key]</label>
+                         }
+                         else
+                         {
+                             <input type="radio" name="radioForScopeType" value="@key"/>
+                             <label>@d[key]</label>
+                         }
+                     </div>
+
+                     if (Model.ScopeType == ScopeType.自己)
+                     {
+                         <span>
+                             &emsp;&emsp;&emsp;&emsp;---仅可查看自己主治患者的信息
+                         </span>
+                     }
+                     else if (Model.ScopeType == ScopeType.全部)
+                     {
+                         <span>
+                             &emsp;&emsp;&emsp;&emsp;---可查看所有主治医生的患者信息
+                         </span>
+                     }
+                     else if (Model.ScopeType == ScopeType.自定义)
+                     {
+                         <span>
+                             &emsp;&emsp;&emsp;&emsp;---可查看指定主治医生的患者信息
+                         </span>
+                     }
+
+                     <br/>
+                 }
+             }
+        </div>
+        
+        <div id="userDefine" class="easyui-panel" style="padding: 5px; background: #E0ECFF; display: none;">
+            
+            <table style="width:100%; ">
+                <tr>
+                    <td >
+                        <p>全部医生：</p>
+                        <div id="toolbar" style="padding: 5px; height: auto">
+                            <div>
+                                工号：<input name="LoginName" class="messager-input" style="width: 80px" />
+                                电话：<input name="Mobile1" class="messager-input" style="width: 80px" />
+                                <a href="#" id="doctor_search" class="easyui-linkbutton search" iconcls="icon-search">搜索</a>
+                            </div>
+                        </div>
+     
+                        <table id="doctor_search_list" url="@Url.Action("List", "Doctor")" >
+            
+                        </table>
+
+                    </td>
+                    <td style="width: 80px;">
+                        <a href="#" id="btnAdd" class="btn-small">添加&gt;&gt;</a>
+                        <br/>
+                        <a href="#" id="btnDel" class="btn-small">&lt;&lt;移除</a>
+                    </td>
+                    <td style="width: 350px;vertical-align: top;">
+                        <p>已选择医生：</p>
+                        <table id="doctor_scope_list" url="@Url.Action("ScopeList", "Doctor", new { id = Model.Id })" >
+            
+                        </table>
+                    </td>
+                </tr>
+            </table>
+           
+        </div>
+    </div>
+    
+</body>
+
+<script type="text/javascript" src="@Url.Content("/Scripts/Doctor/Doctor.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Doctor.Scope();
+    });
+</script>

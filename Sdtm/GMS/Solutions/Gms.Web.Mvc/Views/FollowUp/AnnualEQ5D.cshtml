@@ -1,0 +1,285 @@
+﻿@using Gms.Domain
+@model Gms.Domain.FollowUp.Annual
+
+@{
+    Layout = null;
+
+    String strData = "";
+
+    if (Model.EQ5D != null)
+    {
+        strData = Model.EQ5D;
+    }
+
+    IList<string> listData = strData.Split('|').ToList();
+    if (listData.Count < 6)
+    {
+        for (int i = listData.Count; i < 6; i++)
+        {
+            listData.Add("0");
+        }
+    }
+}
+
+<style>
+    .annualeq5d {
+        margin:2px; 
+        color: #333333;
+    }
+
+    .annualeq5d .title {
+        font-weight: 700;
+        background: url('/Content/img/th_table.png') repeat-x scroll 0 0 #eef3f7;
+        border: 1px solid #c5c5c5;
+        padding: 5px 5px;
+    }
+
+    .annualeq5d .content {
+        border-left: 1px solid #c5c5c5;
+        border-right: 1px solid #c5c5c5;
+        border-bottom: 1px solid #c5c5c5;
+        padding: 5px 5px;
+        line-height: 24px;
+    }
+   
+</style>
+
+<div class="annualeq5d">
+    
+    <form method="post" action="/FollowUp/AnnualSaveEQ5D">
+        
+        <input name="annual.Id" type="text" style="display: none" value="@Model.Id">
+
+        <div style="background-color: #FFF6C6;border: 1px solid #ffd822;padding: 5px;">
+            <span>
+                请在下列各组选项中，指出哪一项最能反映您今天的健康情况，并选择。
+            </span>
+        </div>
+        
+        <div class="title">
+            行动
+        </div>
+        <div class="content">
+            <label>
+                @if (listData[0].Equals("1"))
+                {
+                    <input type="Radio" name="xingdong" value="2" checked><span>我可以四处走动，没有任何困难。</span>
+                }
+                else
+                {
+                    <input type="Radio" name="xingdong" value="2"> <span>我可以四处走动，没有任何困难。</span> 
+                }
+               
+            </label>
+            <br/>
+            <label>
+                @if (listData[0].Equals("2"))
+                {
+                    <input type="Radio" name="xingdong" value="2" checked><span>我行动有些不方便。</span>
+                }
+                else
+                {
+                    <input type="Radio" name="xingdong" value="2"><span>我行动有些不方便。</span>
+                }
+            </label>
+            <br/>
+            <label>
+                @if (listData[0].Equals("3"))
+                {
+                    <input type="Radio" name="xingdong" value="3" checked> <span>我不能下床活动。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="xingdong" value="3"> <span>我不能下床活动。</span> 
+                }
+                
+            </label>
+        </div>
+
+        <div class="title">
+            自己照顾自己
+        </div>
+        <div class="content">
+            <label>
+                @if (listData[1].Equals("1"))
+                {
+                    <input type="Radio" name="zjzgzj" value="1" checked><span>我能自己照顾自己，没有任何困难。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="zjzgzj" value="1"><span>我能自己照顾自己，没有任何困难。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[1].Equals("2"))
+                {
+                    <input type="Radio" name="zjzgzj" value="2" checked><span>我在洗脸、刷牙、洗澡或穿衣方面有些困难。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="zjzgzj" value="2"><span>我在洗脸、刷牙、洗澡或穿衣方面有些困难。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[1].Equals("3"))
+                {
+                    <input type="Radio" name="zjzgzj" value="3" checked><span>我无法自己洗脸、刷牙、洗澡或洗衣服。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="zjzgzj" value="3"><span>我无法自己洗脸、刷牙、洗澡或洗衣服。</span> 
+                }
+            </label>
+        </div>
+        
+        <div class="title">
+            日常活动（如工作，学习，家务事，家庭或休闲活动）
+        </div>
+        <div class="content">
+            <label>
+                @if (listData[2].Equals("1"))
+                {
+                    <input type="Radio" name="rchd" value="1" checked><span>我能进行日常活动，没有任何困难。</span>
+                }
+                else
+                {
+                    <input type="Radio" name="rchd" value="1"><span>我能进行日常活动，没有任何困难。</span>
+                }
+                 
+            </label>
+            <br/>
+            <label>
+                @if (listData[2].Equals("2"))
+                {
+                    <input type="Radio" name="rchd" value="2" checked><span>我在进行日常活动方面有些困难。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="rchd" value="2"><span>我在进行日常活动方面有些困难。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[2].Equals("3"))
+                {
+                    <input type="Radio" name="rchd" value="3" checked><span>我无法进行日常活动。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="rchd" value="3"><span>我无法进行日常活动。</span> 
+                }
+            </label>
+        </div>
+        
+        <div class="title">
+            疼痛/不舒服
+        </div>
+        <div class="content">
+            <label>
+                @if (listData[3].Equals("1"))
+                {
+                    <input type="Radio" name="ttbsf" value="1" checked><span>我没有任何疼痛或不舒服。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="ttbsf" value="1"><span>我没有任何疼痛或不舒服。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[3].Equals("2"))
+                {
+                    <input type="Radio" name="ttbsf" value="2" checked><span>我觉得中度疼痛或不舒服。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="ttbsf" value="2"><span>我觉得中度疼痛或不舒服。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[3].Equals("3"))
+                {
+                    <input type="Radio" name="ttbsf" value="3" checked><span>我觉得极度疼痛或不舒服。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="ttbsf" value="3"><span>我觉得极度疼痛或不舒服。</span> 
+                }
+                
+            </label>
+        </div>
+        
+        <div class="title">
+            焦虑（如紧张、担心、不安等等）/抑郁（如做事情缺乏兴趣、没乐趣、提不起精神等等） 
+        </div>
+        <div class="content">
+            <label>
+                @if (listData[4].Equals("1"))
+                {
+                    <input type="Radio" name="jlyy" value="1" checked><span>我不觉得焦虑或抑郁。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="jlyy" value="1"><span>我不觉得焦虑或抑郁。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[4].Equals("2"))
+                {
+                    <input type="Radio" name="jlyy" value="2" checked><span>我觉得中度焦虑或抑郁。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="jlyy" value="2"><span>我觉得中度焦虑或抑郁。</span> 
+                }
+                
+            </label>
+            <br/>
+            <label>
+                @if (listData[4].Equals("3"))
+                {
+                    <input type="Radio" name="jlyy" value="3" checked><span>我觉得极度焦虑或抑郁。</span> 
+                }
+                else
+                {
+                    <input type="Radio" name="jlyy" value="3"><span>我觉得极度焦虑或抑郁。</span> 
+                }
+                
+            </label>
+        </div>
+        
+        <div class="content">
+            <div>
+                为了帮助您反映健康的好坏，我们画了一个刻度尺（有点儿像温度计），在这个刻度尺上，100代表您心中做好的状况，0代表您心目中最差的状况。
+            </div>
+            <div style="padding: 20px;">
+                <input class="easyui-slider" name="xgzk" value="@listData[5]" style="width:100px;height: 300px;" data-options="showTip:true,rule:[0,'|',10,'|',20,'|',30,'|',40,'|',50,'|',60,'|',70,'|',80,'|',90,'|',100],mode:'v'">
+            </div>
+        </div>
+
+    </form>
+    
+    <script type="text/javascript">
+        $('label', ".annualeq5d").bind('click', function () {
+            //var inputname = $(this).find('input').attr('name');
+
+            //$("input[name='" + inputname + "']:checked").parent('label').css('color', '#330000');
+
+            $(this).find('input').attr('checked', 'checked');
+
+            //$(this).css('color', '#ff0000');
+            //$(this).css('font-weight', 'bold');
+
+        });
+    </script>
+</div>

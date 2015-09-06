@@ -1,0 +1,43 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.FollowUp.FollowUpInfo
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/FollowUp/InfoSaveOrUpdate">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+    
+    <fieldset>
+        <legend>
+            随访设置
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">下次随访时间</td>
+                <td>
+                    @Html.TextBoxFor(c => c.FollowUpDate,new{@class="easyui-datebox"})
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">下次随访形式</td>
+                <td>
+                    @Html.DropDownListFor(c=>c.FollowUpWay)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">随访备注</td>
+                <td>
+                    @Html.TextAreaFor(c => c.Note)
+                </td>
+            </tr>
+        </table>
+    
+    </fieldset>
+
+</form>
+

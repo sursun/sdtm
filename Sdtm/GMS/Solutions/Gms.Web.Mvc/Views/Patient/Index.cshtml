@@ -1,0 +1,31 @@
+﻿@using Gms.Domain
+@model Gms.Domain.DiabetesType
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+
+    <div id="toolbar" style="padding: 5px; height: auto">
+        <div>
+            姓名：<input name="RealName" class="messager-input" style="width: 80px" />
+            编号：<input name="CodeNo" class="messager-input" style="width: 80px" />
+            身份证号：<input name="IdCard" class="messager-input" style="width: 80px" />
+            <a href="#" id="patient_search" class="easyui-linkbutton search" iconcls="icon-search">搜索</a>
+        </div>
+    </div>
+     
+    <table id="patient_search_list" url="@Url.Action("List","Patient",new{DiabetesType=Model})" >
+            
+    </table>
+        
+</body>
+<script type="text/javascript" src="@Url.Content("/Scripts/Patient/Patient.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Patient.Init();
+    });
+
+</script>
+
+

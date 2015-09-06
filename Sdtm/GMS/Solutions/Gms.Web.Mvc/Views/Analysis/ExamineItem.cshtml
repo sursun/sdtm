@@ -1,0 +1,191 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Exam
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>指标检查分析</title>
+        <link rel="stylesheet" href="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/styles/jqx.base.css")" type="text/css" />
+        <script type="text/javascript" src="@Url.Content("/Scripts/jquery-1.7.2.min.js")"></script> 
+
+        <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxcore.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdraw.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxchart.core.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdata.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxbuttons.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxscrollbar.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxmenu.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxlistbox.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdropdownlist.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.selection.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.pager.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.filter.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxcheckbox.js")"></script>
+
+    </head>
+
+    <body>
+        <div id="jqxChart1" style="width: 850px; height: 400px;"></div>
+        <div id="jqxChart2" style="width: 850px; height: 400px;"></div>
+        @{
+            int nExam = (int)Model;
+            String strName = ((Exam) nExam).ToString();
+        }
+    </body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            var source1 =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'Name' },
+                    { name: 'Float1' },
+                    { name: 'Float2' },
+                    { name: 'Float3' },
+                    { name: 'Float4' }
+
+                ],
+                url: '/Analysis/ExamineItemDatas2?exam=@nExam'
+            };
+
+
+            var dataAdapter1 = new $.jqx.dataAdapter(source1, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('加载失败 "' + source.url + '" : ' + error); } });
+
+
+            // prepare jqxChart settings
+            var settings1 = {
+                title: "@strName 检查分析",
+                description: "",
+                enableAnimations: true,
+                showLegend: true,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: dataAdapter1,
+                xAxis:
+                {
+                    dataField: 'Name',
+                    displayText: '检查指标',
+
+                    gridLines: { visible: true }
+                },
+                colorScheme: 'scheme01',
+                
+                seriesGroups:
+                [
+                    {
+                        type: 'column',
+                        columnsGapPercent: 50,
+                        seriesGapPercent: 20,
+                        valueAxis:
+                        {
+                            visible: true,
+                            axisSize: 'auto',
+                            gridLines: { visible: false }
+                        },
+                        series: [
+                            {
+                                dataField: 'Float1',
+                                displayText: '最高值',
+                                labels: {
+                                    visible: true,
+                                    verticalAlignment: 'top',
+                                    offset: { x: 0, y: -20 }
+                                },
+                            },
+                            {
+                                dataField: 'Float2',
+                                displayText: '平均值',
+                                labels: {
+                                    visible: true,
+                                    verticalAlignment: 'top',
+                                    offset: { x: 0, y: -20 }
+                                },
+                            },
+                            {
+                                dataField: 'Float3',
+                                displayText: '参考值',
+                                labels: {
+                                    visible: true,
+                                    verticalAlignment: 'top',
+                                    offset: { x: 0, y: -20 }
+                                },
+                            },
+                            {
+                                dataField: 'Float4',
+                                displayText: '最低值',
+                                labels: {
+                                    visible: true,
+                                    verticalAlignment: 'top',
+                                    offset: { x: 0, y: -20 }
+                                },
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            var source2 =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'Name' },
+                    { name: 'Float1' },
+                    { name: 'Float2' }
+                ],
+                url: '/Analysis/ExamineItemDatas?exam=@nExam'
+            };
+            
+            var dataAdapter2 = new $.jqx.dataAdapter(source2, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('加载失败 "' + source.url + '" : ' + error); } });
+            
+            // prepare jqxChart settings
+            var settings2 = {
+                title: "指标达标率",
+                description: "",
+                enableAnimations: true,
+                showLegend: true,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 0, top: 0, right: 0, bottom: 0 },
+                legendLayout: { left: 700, top: 160, width: 300, height: 200, flow: 'vertical' },
+                source: dataAdapter2,
+                colorScheme: 'scheme01',
+                seriesGroups:
+                    [
+                        {
+                            type: 'pie',
+                            showLabels: true,
+                            series:
+                                [
+                                    {
+                                        dataField: 'Float2',
+                                        displayText: 'Name',
+                                        labelRadius: 170,
+                                        initialAngle: 15,
+                                        radius: 145,
+                                        centerOffset: 0,
+                                        formatFunction: function (value) {
+                                            if (isNaN(value))
+                                                return value;
+                                            return parseFloat(value) + '%';
+                                        },
+                                    }
+                                ]
+                        }
+                    ]
+            };
+
+
+            $('#jqxChart1').jqxChart(settings1);
+
+            $('#jqxChart2').jqxChart(settings2);
+
+        });
+    </script>
+    
+</html>

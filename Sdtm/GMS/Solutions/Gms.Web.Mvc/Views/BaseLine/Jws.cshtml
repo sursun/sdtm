@@ -1,0 +1,404 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.Health.MedicalHistory
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/BaseLine/JwsSave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+
+    <table class="form_table" style="width:100%;">
+        <tr>
+            <td class="td-label w-i-20">心血管系统</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>冠心病</td>
+                        <td>
+                            @{
+                                var selval = (int)YesNoUnclear.是;
+                                String styleStr = "";
+                            }
+                            
+                            @Html.DropDownListForEnum(c=>c.GuanXinBing,"",new{@class="select_show_view",forview="GuanXinBingView",selectval=selval})
+                            @{
+                                styleStr = Model.GuanXinBing != YesNoUnclear.是 ? "display: none;" : "";
+                            }
+                            <span id="GuanXinBingView" style="@styleStr">
+                                诊断日期
+                                @Html.TextBoxFor(c => c.GuanXinBingDateTime)，病程
+                                @Html.TextBoxFor(c => c.GuanXinBingCourse) 
+                            </span>
+
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>心绞痛</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.XinJiaoTong)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>心肌梗塞</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.XinJiGs)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>血管再通</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.XueGuanZt)
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>冠脉搭桥</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.GuanMaiDq)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>心衰</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.XinShuai)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>高血压</td>
+                        <td>
+                            @Html.DropDownListForEnum(c=>c.GaoXueYa,"",new{@class="select_show_view",forview="GaoXueYaView",selectval=selval})
+                            @{
+                                styleStr = Model.GaoXueYa != YesNoUnclear.是 ? "display: none;" : "";
+                            }
+
+                            <span id="GaoXueYaView" style="@styleStr">
+                                诊断日期
+                                @Html.TextBoxFor(c => c.GaoXueYaDateTime)，病程
+                                @Html.TextBoxFor(c => c.GaoXueYaCourse) 
+                            </span>
+                            
+                        </td>
+                    </tr>   
+                </table>
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">中枢神经系统</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>脑出血</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.NaoChuXue)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>脑梗死</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.NaoGengSe)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">高尿酸血症及痛风</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>高尿酸血症</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.GaoNiaoSxz)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>急性痛风性关节炎</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.TongFengGjy)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>痛风性肾病</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.TongFengSb)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">肾病</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>原发性肾小球肾炎</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.ShenXiaoQy)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>蛋白尿</td>
+                        <td>
+                            @Html.DropDownListForEnum(c=>c.DanBaiNiao,"",new{@class="select_show_view",forview="DanBaiNiaoView",selectval=selval})
+                            @{
+                                styleStr = Model.DanBaiNiao != YesNoUnclear.是 ? "display: none;" : "";
+                            }
+
+                            <span id="DanBaiNiaoView" style="@styleStr">
+                                开始时间
+                                @Html.TextBoxFor(c => c.DanBaiNiaoDateTime,new{@class="easyui-datebox"})
+                            </span>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>血液透析</td>
+                        <td>
+                            @Html.DropDownListForEnum(c=>c.XueYeTx,"",new{@class="select_show_view",forview="XueYeTxView",selectval=selval})
+                            @{
+                                styleStr = Model.XueYeTx != YesNoUnclear.是 ? "display: none;" : "";
+                            }
+
+                            <span id="XueYeTxView" style="@styleStr">
+                                开始时间
+                                @Html.TextBoxFor(c => c.XueYeTxDateTime,new{@class="easyui-datebox"})
+                            </span>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>腹透治疗</td>
+                        <td>
+                            @Html.DropDownListForEnum(c=>c.FuTouZl,"",new{@class="select_show_view",forview="FuTouZlView",selectval=selval})
+                            @{
+                                styleStr = Model.FuTouZl != YesNoUnclear.是 ? "display: none;" : "";
+                            }
+
+                            <span id="FuTouZlView" style="@styleStr">
+                                开始时间
+                                @Html.TextBoxFor(c => c.FuTouZlDateTime,new{@class="easyui-datebox"})
+                            </span>
+                            
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">肿瘤</td>
+            <td>
+                @Html.DropDownListForEnum(c=>c.ZhongLiu,null,new{@class="select_show_view",forview="ZhongLiuView",selectval=selval})
+                @{
+                    styleStr = Model.ZhongLiu != YesNo.是 ? "display: none;" : "";
+                }
+                
+                <div id="ZhongLiuView" style="height: 250px;padding:10px;@styleStr">
+                    <iframe src="/BaseLine/JwsItem?id=@Model.Id&hType=@MedicalHistoryType.肿瘤" style='width: 100%;height:100%;border: none;' frameborder="no"></iframe>
+                </div>
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">手术史</td>
+            <td>
+                @Html.DropDownListForEnum(c=>c.ShouShu,null,new{@class="select_show_view",forview="ShouShuView",selectval=selval})
+                @{
+                    styleStr = Model.ShouShu != YesNo.是 ? "display: none;" : "";
+                }
+                
+                <div id="ShouShuView" style="height: 250px;padding:10px;@styleStr">
+                    <iframe src="/BaseLine/JwsItem?id=@Model.Id&hType=@MedicalHistoryType.手术" style='width: 100%;height:100%;border: none;' frameborder="no"></iframe>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">骨折史</td>
+            <td>
+                
+                @Html.DropDownListForEnum(c=>c.GuZhe,null,new{@class="select_show_view",forview="GuZheView",selectval=selval})
+                @{
+                    styleStr = Model.GuZhe != YesNo.是 ? "display: none;" : "";
+                }
+                
+                <div id="GuZheView" style="height: 250px;padding:10px;@styleStr">
+                    <iframe src="/BaseLine/JwsItem?id=@Model.Id&hType=@MedicalHistoryType.骨折" style='width: 100%;height:100%;border: none;' frameborder="no"></iframe>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">截肢史</td>
+            <td>
+                踝关节以下
+                @Html.DropDownListFor(c=>c.HuaiGuanjShang)
+                ，踝关节以上
+                @Html.DropDownListFor(c=>c.HuaiGuanjXia)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">下肢血管旁路/再通治疗</td>
+            <td>
+                @Html.DropDownListFor(c=>c.XueGuanZl)
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">糖尿病慢性并发症病史</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>眼底病变</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.YanDiBb)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>神经病变</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.ShenJingBb)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>糖尿病足</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.TnbZu)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>糖尿病肾病</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.TnbShenBing)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">糖尿病急性并发症 <span class="sub-label">1年内发生</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td>糖尿病酮症酸中毒
+                            @Html.DropDownListFor(c=>c.TnbTongZd)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>非酮症高渗综合症
+                            @Html.DropDownListFor(c=>c.FeiTongZhz)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>乳酸酸中毒 
+                            @Html.DropDownListFor(c=>c.RuShuanZd)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1年内发生轻度低血糖的次数
+                            @Html.TextBoxFor(c=>c.QingDxtTimes,new{style="width: 40px;"})
+                            次，发生严重低血糖的次数
+                            @Html.TextBoxFor(c=>c.ZhongDxtTimes,new{style="width: 40px;"})
+                            次 
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="td-label">主要症状</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>间歇性跛行</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.BoXing)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>阳痿</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.YangWei)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>麻木</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.MaMu)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>视物模糊</td>
+                        <td>
+                            @Html.DropDownListFor(c=>c.ShiWuMh)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+    
+</form>
+<script type="text/javascript">
+    $('#GuanXinBingDateTime').datebox({
+        onSelect: function (date) {
+           
+            var val = $.computerCourse(date);
+
+            $("#GuanXinBingCourse").val(val);
+        }
+    });
+
+    $('#GaoXueYaDateTime').datebox({
+        onSelect: function (date) {
+           
+            var val = $.computerCourse(date);
+
+            $("#GaoXueYaCourse").val(val);
+        }
+    });
+    
+    $("#btnZhongLiu").die().live("click", function () {
+
+        var parentTable = $("#ZhongLiuView");//$(this).parents("tbody");
+
+        var medicalHisId = $("input[name='Id']").val();
+        var name = $("#ZhongLiuName").val();
+        var note = $("#ZhongLiuNote").val();
+        var dateTime = $('#ZhongLiuDateTime').datebox('getValue');
+
+        var htmlStr = "<tr><td>" 
+            + name 
+            + "</td><td>" 
+            + dateTime 
+            + "</td><td>" 
+            + note 
+            + "</td><td>" 
+            + '<a href="#1" class="btn-small delItem">删除</a>'
+            + "</td></tr>";
+        
+        parentTable.append(htmlStr);
+
+    });
+
+    $(".delItem").die().live("click", function () {
+
+        //var url = this.hash.substr(1);
+
+        var parentTr = $(this).parent().parent();
+
+        //var medicalHisId = $("input[name='Id']").val();
+        //var name = $("#ZhongLiuName").val();
+        //var note = $("#ZhongLiuNote").val();
+        //var dateTime = $('#ZhongLiuDateTime').datebox('getValue');
+
+
+        parentTr.remove();
+
+    });
+
+
+
+</script>
+

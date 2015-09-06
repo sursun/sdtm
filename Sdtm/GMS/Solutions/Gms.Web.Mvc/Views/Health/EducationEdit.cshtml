@@ -1,0 +1,84 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Health.Education
+@{
+    Layout = null;
+}
+
+<form id="formPingGu" method="post" action="/Health/EducationSaveOrUpdate">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+    <input name="Patient.Id" type="text" style="display: none" value="@Model.Patient.Id">
+
+    <fieldset>
+        <legend>
+            既往接受糖尿病教育评估
+        </legend>
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">营养师教育</td>
+                <td>
+                    @Html.DropDownListFor(c => c.YingYangShi)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">糖尿病护士教育</td>
+                <td>
+                    @Html.DropDownListFor(c => c.HuShi)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">足病防护教育</td>
+                <td>
+                    @Html.DropDownListFor(c => c.ZuBing)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    
+    <fieldset>
+        <legend>
+            教育实施记录
+        </legend>
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td style="width:100px; ">教育时间</td>
+                <td>
+                    @Html.TextBoxFor(c => c.CreateTime,new{@class="easyui-datebox"})
+                </td>
+            </tr>
+            <tr>
+                <td>教育内容</td>
+                <td>
+                    <ul>
+                        @{
+                            var d = new EducationFlag().ToDictionary();
+                            foreach (var key in d.Keys)
+                            {
+                                if ((Model.EducationFlag & key) == key)
+                                {
+                                    <li>
+                                        <input type="checkbox" name="checkForEducationFlag" value="@key" checked/><label>@d[key]</label>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <input type="checkbox" name="checkForEducationFlag" value="@key"/><label>@d[key]</label>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>教育者</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Teacher)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+</form>
+  

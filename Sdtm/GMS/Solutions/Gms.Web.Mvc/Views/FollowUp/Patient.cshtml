@@ -1,0 +1,163 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Patient
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body class="easyui-layout">
+    
+    <input id="PatientId" value="@Model.Id" style="display: none">
+
+    <div data-options="region:'west'" style="width:180px;padding:10px;background-color: #E0ECFF;">
+        <div style="text-align: center;font-size:x-large;font-weight: bold;">
+            @Model.RealName
+        </div>
+        <div style="text-align: center;font-size:large;font-weight: bold;color: #FF6600;">
+            【@Model.CodeNo】
+        </div>
+        <div style="text-align: center;margin-top: 5px;">
+            <span>性别：
+               <b>@Model.Sex</b> 
+            </span>
+            <span style="margin-left: 10px;">年龄：
+                <b>@Model.Age</b>
+                岁</span>
+        </div>
+        <div style="margin-top: 20px;">
+            <span>
+                诊断:
+            </span>
+            @if (Model != null && Model.Diabetes != null)
+            {
+                <b>@Model.Diabetes.Name</b>
+            }
+        </div>
+        <div style="margin-top: 20px;">
+            <span>
+                病程:
+            </span>
+            @if (Model != null)
+            {
+                <b>@Model.DiseaseCourse</b>
+            }
+            
+        </div>
+        <div style="margin-top: 20px;">
+            <span>
+                病程阶段:
+            </span>
+            @if (Model != null)
+            {
+                <b>@Model.DiseaseStage</b>
+            }
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <span>
+                主治医生:
+            </span>
+            <b id="mainDoctor">
+                @if (Model != null && Model.Doctor!= null)
+                {
+                    @Model.Doctor.RealName
+                }
+            </b>
+
+            @if (Model != null)
+            {
+                <a id="selectDoctor" href="#@Model.Id" class="btn-small">修改</a>
+            }
+            
+        </div>
+        
+        <div id="selcet_doctor_dlg" dlgtitle="选择医生" style="display: none;padding:8px;">
+            <iframe id="selcet_doctor_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+                @*动态加载*@
+            </iframe>
+        </div>
+        
+        <div id="followupinfo" style="margin-top: 20px;">
+            
+        </div>
+
+        <iframe id="followupinfo_iframe" src="/FollowUp/FollowUpInfoView?patientid=@Model.Id" style="display: none; " frameborder="no">
+            
+        </iframe>
+@*         @if (Model != null)
+         {
+             <a href="#@Model.Id" class="setfollowupinfo btn-small">设置随访</a>
+         }*@
+
+        <div id="editdlg">
+            
+        </div>
+
+    </div>
+    
+    <div data-options="region:'center'" >
+@*        <div style="height:30px; padding:10px">
+            <a href="#/BaseLine/Index/1" class="easyui-linkbutton addfollowup" iconcls="icon-add" >新增维持复诊</a>
+            <a href="#/BaseLine/Index/1" class="easyui-linkbutton addfollowup" iconcls="icon-add">新增调整</a>
+            <a href="#" class="easyui-linkbutton addfollowup" iconcls="icon-add">新增临床事件</a>
+            <a href="#" class="easyui-linkbutton addfollowup" iconcls="icon-add">新增糖尿病评估相关量表</a>
+            <a href="#" class="easyui-linkbutton addfollowup" iconcls="icon-add">新增年度评估</a>
+            <a href="#" class="easyui-linkbutton addfollowup" iconcls="icon-add">新增健康教育</a>
+        </div>*@
+        <div class="easyui-panel" data-options="fit:true,border:false">
+            <div id="mainTab" class="easyui-tabs" data-options="fit:true">	
+                <div title="基线资料" style="padding:10px">	
+                    <iframe style="width: 100%;height:100%;border: none;"  frameborder="no"  src="/BaseLine/Index/@Model.Id">基线资料</iframe>
+                </div>	
+ @*               <div title="随访记录" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" url="/Department">随访记录</iframe>
+                </div>*@
+                <div title="复诊记录" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/FollowUp/FuZhen/@Model.Id">复诊记录</iframe>
+                </div> 
+                <div title="调整记录" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/FollowUp/TiaoZheng/@Model.Id">调整记录</iframe>	
+                </div>
+                <div title="临床事件" style="padding:10px">	
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/Health/Clinic/@Model.Id">临床事件</iframe>
+                </div>	
+                <div title="糖尿病评估相关量表" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/Health/EvaScale/@Model.Id">糖尿病评估相关量表</iframe>
+                </div>
+                <div title="年度随访评估" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/FollowUp/Annual/@Model.Id">年度随访评估</iframe>		
+                </div>
+                <div title="各指标曲线图" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/FollowUp/ChartLine/@Model.Id">各指标曲线图</iframe>		
+                </div>
+                <div title="健康教育" style="padding:10px">
+                    <iframe style="width: 100%;height:100%;border: none;" frameborder="no" url="/Health/Education/@Model.Id">健康教育</iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div id="fullwin" style="padding:10px;width: 100%">
+            <iframe style="width: 100%;height:100%;border: none;" frameborder="no"></iframe>
+        </div>
+
+    </div>
+   
+</body>
+
+<script type="text/javascript" src="@Url.Content("/Scripts/FollowUp/FollowUp.Patient.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        FollowUp.Patient();
+    });
+
+    var refreshFollowupInfo = function () {
+        
+        var subContents = $("#followupinfo_iframe").contents();
+        var ihtml = subContents.find("#followupinfo_content").html();
+   
+        $("#followupinfo").html(ihtml);
+    }
+
+</script>
+
+

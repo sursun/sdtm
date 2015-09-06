@@ -1,0 +1,153 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.FollowUp.TiaoZheng
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/FollowUp/TiaoZhengSave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+    
+    <fieldset>
+        <legend>
+            个体化调整目标设定
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">体重</td>
+                <td>
+                    @Html.TextBoxFor(c => c.Weight,new{style="width: 40px;"})
+                    Kg
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">空腹血糖FBG</td>
+                <td>
+                    @Html.TextBoxFor(c => c.FBG,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">餐后血糖PBG</td>
+                <td>
+                    @Html.TextBoxFor(c => c.PBG,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">HbA1c</td>
+                <td>
+                    @Html.TextBoxFor(c => c.HbA1c,new{style="width: 40px;"})
+                    %
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">低密度胆固醇LDL</td>
+                <td>
+                    @Html.TextBoxFor(c => c.LDL,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label">血压BP</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.BloodPressureHigh,new{style="width: 40px;"})
+                    /
+                    @Html.TextBoxFor(c=>c.BloodPressureLow,new{style="width: 40px;"})
+                    mmHg
+                </td>
+            </tr>
+        
+        </table>
+    
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            随访评估
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">体重</td>
+                <td>
+                    @Html.TextBoxFor(c => c.TnbBasic.Weight,new{style="width: 40px;"})
+                    Kg
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">空腹血糖FBG</td>
+                <td>
+                    @Html.TextBoxFor(c => c.TnbBasic.FBG,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">餐后血糖PBG</td>
+                <td>
+                    @Html.TextBoxFor(c => c.TnbBasic.PBG,new{style="width: 40px;"})
+                    mmol/L 
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label w-i-20">HbA1c</td>
+                <td>
+                    @Html.TextBoxFor(c => c.TnbBasic.HbA1c,new{style="width: 40px;"})
+                    %
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label">血压BP</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.TnbBasic.BloodPressureHigh,new{style="width: 40px;"})
+                    /
+                    @Html.TextBoxFor(c=>c.TnbBasic.BloodPressureLow,new{style="width: 40px;"})
+                    mmHg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label">距上次随访至今</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>发生轻度低血糖次数</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.QingDxtTimes,new{style="width: 40px;"})
+                                次
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>发生严重低血糖次数</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.ZhongDxtTimes,new{style="width: 40px;"})
+                                次
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>血糖值低于3.9mmol/L</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.DxtTimes,new{style="width: 40px;"})
+                                次
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+    
+    </fieldset>
+
+</form>
+

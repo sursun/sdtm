@@ -1,0 +1,170 @@
+﻿@using Gms.Domain
+@using Gms.Common
+@model Gms.Domain.Health.GdHistory
+
+@{
+    Layout = null;
+}
+
+<form id="doctorform" method="post" action="/BaseLine/GdHistorySave">
+    
+    <input name="Id" type="text" style="display: none" value="@Model.Id">
+
+    <table class="form_table" style="width:100%;">
+        <tr>
+            <td class="td-label w-i-20">疾病史</td>
+            <td>
+                <ul>
+                    @{
+                        var d = new IllnessFlag().ToDictionary();
+                        foreach (var key in d.Keys)
+                        {
+                            if ((Model.IllnessFlag & key) == key)
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForIllnessFlag" value="@key" checked/>
+                                    <label>@d[key]</label>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForIllnessFlag" value="@key"/>
+                                    <label>@d[key]</label>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="td-label w-i-20">孕产史</td>
+            <td>
+                
+                <table>
+                    <tr>
+                        <td>
+                            死胎
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(c=>c.SiTai,new{style="width: 40px;"})
+                            人次
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            死产
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(c=>c.SiChan,new{style="width: 40px;"})
+                            人次
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            流产
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(c=>c.LiuChan,new{style="width: 40px;"})
+                            人次
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            足月产
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(c=>c.ZuYueChan,new{style="width: 40px;"})
+                            人次
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            早产
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(c=>c.ZaoChan,new{style="width: 40px;"})
+                            人次
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="td-label w-i-20">妊娠并发症</td>
+            <td>
+                <ul>
+                    @{
+                        var dc = new GdSyndromeFlag().ToDictionary();
+                        foreach (var key in dc.Keys)
+                        {
+                            if ((Model.GdSyndromeFlag & key) == key)
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForGdSyndromeFlag" value="@key" checked/>
+                                    <label>@dc[key]</label>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForGdSyndromeFlag" value="@key"/>
+                                    <label>@dc[key]</label>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="td-label w-i-20">妊娠糖尿病史</td>
+            <td>
+                @Html.DropDownListFor(c=>c.GdEver)
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="td-label w-i-20">GDM分级</td>
+            <td>
+                @Html.DropDownListFor(c=>c.GdmLevel)
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="td-label w-i-20">家族史（一级亲属）</td>
+            <td>
+                <ul>
+                    
+                    @{
+                        var fd = new FamilyIllnessFlag().ToDictionary();
+                        foreach (var key in fd.Keys)
+                        {
+                            if ((Model.FamilyIllnessFlag & key) == key)
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForFamilyIllnessFlag" value="@key" checked/>
+                                    <label>@fd[key]</label>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <input type="checkbox" name="checkForFamilyIllnessFlag" value="@key"/>
+                                    <label>@fd[key]</label>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </td>
+        </tr>
+
+    </table>
+    
+</form>
+

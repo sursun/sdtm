@@ -1,0 +1,182 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>各指标曲线图</title>
+        <link rel="stylesheet" href="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/styles/jqx.base.css")" type="text/css" />
+        <script type="text/javascript" src="@Url.Content("/Scripts/jquery-1.7.2.min.js")"></script> 
+
+        <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxcore.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdraw.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxchart.core.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdata.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxbuttons.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxscrollbar.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxmenu.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxlistbox.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxdropdownlist.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.selection.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.pager.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxgrid.filter.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/jqwidgets-ver3.7.1/jqwidgets/jqxcheckbox.js")"></script>
+
+    </head>
+
+    <body>
+        <div id="jqxChart" style="width: 850px; height: 400px;"></div>
+        <div id='jqxGrid' style="margin-top: 50px; width: 850px; height: 400px; position: relative; left: 0px; top: 0px;">
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'Name' },
+                    { name: 'Float1' },
+                    { name: 'Float2' },
+                    { name: 'Float3' },
+                    { name: 'Int1' }
+
+                ],
+                url: '/Analysis/ExamineDatas'
+            };
+       
+
+            var dataAdapter = new $.jqx.dataAdapter(source, { async: false, autoBind: true, loadError: function (xhr, status, error) { alert('加载失败 "' + source.url + '" : ' + error); } });
+ 
+     
+            // prepare jqxChart settings
+            var settings = {
+                title: "指标检查分析",
+                description: "",
+                enableAnimations: true,
+                showLegend: true,
+                padding: { left: 5, top: 5, right: 5, bottom: 5 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: dataAdapter,
+                xAxis:
+                {
+                    dataField: 'Name',
+                    displayText: '检查项目',
+
+                    gridLines: { visible: true }
+                },
+                colorScheme: 'scheme01',
+                seriesGroups:
+                [
+                    {
+                        type: 'column',
+                        columnsGapPercent: 50,
+                        seriesGapPercent: 0,
+                        valueAxis:
+                        {
+                            visible: true,
+                            axisSize: 'auto',
+                            gridLines: { visible: false }
+                        },
+                        series: [
+                            {
+                                dataField: 'Float1',
+                                displayText: '总次数',
+                                labels: {
+                                    visible: true,
+                                    verticalAlignment: 'top',
+                                    offset: { x: 0, y: -20 }
+                                },
+                            },
+                            {
+                                dataField: 'Float2',
+                                displayText: '检查次数',
+                                labels: {
+                                    visible: true,
+                                    verticalAlignment: 'top',
+                                    offset: { x: 0, y: -20 }
+                                },
+                            }
+                            //{ dataField: 'Float3', displayText: 'George' },
+                        ]
+                    }
+                    ,
+                        {
+                            type: 'line',
+                            valueAxis:
+                            {
+                                visible: true,
+                                position: 'right',
+                                unitInterval: 10,
+                                minValue: '0',
+                                maxValue: '100',
+                                //title: { text: '检查率(%)' },
+                                gridLines: { visible: true },
+                                labels: { horizontalAlignment: 'left' }
+                            },
+                            series: [
+                                    { dataField: 'Float3', displayText: '检查率(%)' }
+                            ]
+                        }
+                ]
+            };
+
+            $('#jqxChart').jqxChart(settings);
+
+            $("#jqxGrid").jqxGrid({
+                width: 848,
+                height: 232,
+                source: source,
+                columns:
+                [
+                    { text: "检查项目", width: '25%', datafield: "Name" },
+                    { text: "总次数", width: '25%', datafield: "Float1" },
+                    {
+                        text: "检查次数", width: '25%', datafield: "Float2", cellsrenderer: function (row, columnfield, value, defaulthtml, columnproperties) {
+
+                            return '<a href="#">' + value  + '</a>';
+
+                        }
+                    },
+                    { text: "检查率(%)", width: '25%', datafield: "Float3" }
+                ]
+            });
+
+            var features = 'dialogHeight=480; dialogWidth=800; center=yes;location=0; resizable=0; status=0';
+            
+            $("#jqxGrid").on("cellclick", function (event) {
+                // event arguments.
+                var args = event.args;
+                // row's bound index.
+                var rowBoundIndex = args.rowindex;
+                // row's visible index.
+                var rowVisibleIndex = args.visibleindex;
+                // right click.
+                var rightclick = args.rightclick;
+                // original event.
+                var ev = args.originalEvent;
+                // column index.
+                var columnindex = args.columnindex;
+                // column data field.
+                var dataField = args.datafield;
+                // cell value
+                var value = args.value;
+
+                if (dataField == "Float2") {
+                    var data = $('#jqxGrid').jqxGrid('getrowdata', rowBoundIndex);
+                    
+                    window.showModalDialog("/Analysis/ExamineItem?exam=" + data.Int1, '', features);
+                }
+                
+            });
+
+        });
+    </script>
+    
+</html>

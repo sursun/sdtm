@@ -1,0 +1,56 @@
+﻿@using Gms.Domain
+@model Gms.Domain.FollowUp.YunZhong
+
+@{
+    Layout = null;
+}
+
+<div style="margin-top: 5px;margin-bottom: 10px;">
+    <span id="FollowUpName"style="font-weight:bolder;font-size: x-large; height: 28px;">@Model.Name</span>
+
+    <a id="btnName" href="#@Model.Id" class="btn-small">修改</a>
+</div>
+
+<table class="form_table">
+
+    <tr>
+        <td class="td-label w-i-20" style="vertical-align: middle">随访指标</td>
+        <td>
+            <a id="btnZhiBiao" href="#@Model.Id" class="btn-small">编辑/完善</a>
+        </td>
+    </tr>
+    <tr>
+        <td class="td-label w-i-20" style="vertical-align: middle">诊疗方案</td>
+        <td>
+            <a id="btnTreament" href="#@Model.Treatment.Id" class="btn-small">编辑/完善</a>
+        </td>
+    </tr>
+   
+    <tr>
+        <td class="td-label w-i-20" style="vertical-align: middle">责任医生</td>
+        <td>
+            <span>
+                @{
+                    string strName = "";
+                    if (Model.Doctor != null)
+                    {
+                        strName = Model.Doctor.RealName;
+                        strName += "【";
+                        strName += Model.Doctor.LoginName;
+                        strName += "】";
+                    }
+                }
+                @strName
+            </span>
+        
+            <a id="selectDoctor" href="#" class="btn-small">修改</a>
+        </td>
+    </tr>
+
+</table>
+
+<div id="selcet_doctor_dlg" dlgtitle="选择医生" style="display: none;padding:8px;">
+    <iframe id="selcet_doctor_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+        @*动态加载*@
+    </iframe>
+</div>

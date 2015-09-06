@@ -1,0 +1,51 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Disease
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body>
+
+    <div id="toolbar" style="padding: 5px; height: auto">
+        <div style="margin-bottom: 5px">
+            <a href="#" class="easyui-linkbutton add" forgid="disease_search_list" iconcls="icon-add" plain="true">添加</a>
+            <a href="#" class="easyui-linkbutton del" forgid="disease_search_list" iconcls="icon-remove" plain="true">删除</a>
+            <a href="#" class="easyui-linkbutton edit" forgid="disease_search_list" iconcls="icon-edit" plain="true">修改</a>
+        </div>
+        <div>
+            &emsp;类型：@Html.DropDownListForCommonCode(c=>c.Type,CommonCodeType.疾病类别,"TypeId","全部")
+            &emsp;名称：<input name="Name" class="messager-input" style="width: 80px" />
+            &emsp;简拼：<input name="PinYin" class="messager-input" style="width: 80px" />
+            
+            <a href="#" id="disease_search" class="easyui-linkbutton search" iconcls="icon-search">搜索</a>
+        </div>
+    </div>
+     
+    <table id="disease_search_list" url="@Url.Action("List","Disease")" edit="@Url.Action("Get","Disease")" del="@Url.Action("Delete","Disease")">
+            
+    </table>
+        
+    <div id="disease_search_edit" dlgtitle="疾病信息" style="display: none">
+        <div id="disease_search_edit_content">
+            @{
+                Html.RenderPartial("Edit", new Disease());
+            }
+        </div>
+    </div>
+    
+     @*记录选择的项目，便于其他页面调用*@
+    <div style="display: none;">
+        <input id="disease_selected_Id" />
+        <input id="disease_selected_Name" />
+    </div>
+    
+</body>
+<script type="text/javascript" src="@Url.Content("/Scripts/Disease/Disease.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Disease.Init();
+    });
+
+</script>
+
+

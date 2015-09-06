@@ -1,0 +1,653 @@
+﻿
+@using System.Collections
+@using Gms.Common
+@model TgjcModel
+
+@{
+    Layout = null;
+}
+
+<form method="post" action="/BaseLine/TgjcSave">
+    
+    <input name="Physical.Id" type="text" style="display: none" value="@Model.Physical.Id">
+    <input name="Uroscopy.Id" type="text" style="display: none" value="@Model.Uroscopy.Id">
+    <input name="Blood.Id" type="text" style="display: none" value="@Model.Blood.Id">
+    <input name="BloodRt.Id" type="text" style="display: none" value="@Model.BloodRt.Id">
+    <input name="TnbBasic.Id" type="text" style="display: none" value="@Model.TnbBasic.Id">
+
+    <fieldset>
+        <legend>
+            体格检查
+        </legend>
+
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">身高</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Physical.Height,new{style="width: 40px;"})cm 
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label">体重</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.TnbBasic.Weight,new{style="width: 40px;"})Kg
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label">BMI</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Physical.BMI,new{style="width: 40px;"})kg/m<sup>2</sup>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-label">腰围</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Physical.Waistline,new{style="width: 40px;"})cm 
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label">臀围</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Physical.Hipline,new{style="width: 40px;"})cm 
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label">腰臀比</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Physical.WaistHipline,new{style="width: 40px;"})
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label">血压BP</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.TnbBasic.BloodPressureHigh,new{style="width: 40px;"})
+                    /
+                    @Html.TextBoxFor(c=>c.TnbBasic.BloodPressureLow,new{style="width: 40px;"})
+                    mmHg
+                </td>
+            </tr>
+        
+        </table>
+    
+    </fieldset>
+    
+    <fieldset>
+        <legend>
+            尿液检查
+        </legend>
+        @{
+            IList<OptionItem> options = new List<OptionItem>();
+            options.Add(new OptionItem() { Text = "未查", Value = 0 });
+            options.Add(new OptionItem() { Text = "(-)", Value = 1 });
+            options.Add(new OptionItem() {Text = "+", Value = 2});
+            options.Add(new OptionItem() {Text = "++", Value = 3});
+            options.Add(new OptionItem() {Text = "+++", Value = 4});
+        }
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">尿常规</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>酮体</td>
+                            <td>
+                                @Html.DropDownList(options,"Uroscopy.Ketone",Model.Uroscopy.Ketone,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>尿糖</td>
+                            <td>
+                                @Html.DropDownList(options,"Uroscopy.UrineSugar",Model.Uroscopy.UrineSugar,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>蛋白</td>
+                            <td>
+                                @Html.DropDownList(options,"Uroscopy.UrineProtein",Model.Uroscopy.UrineProtein,null)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label w-i-20">尿微量白蛋白</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Uroscopy.mALB,new{style="width: 40px;"})
+                </td>
+            </tr> 
+            <tr>
+                <td class="td-label w-i-20">尿肌酐</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Uroscopy.UCr,new{style="width: 40px;"})
+                </td>
+            </tr> 
+            <tr>
+                <td class="td-label w-i-20">尿微量白蛋白/尿肌酐</td>
+                <td>
+                    @{
+                        options.Clear();
+                        options.Add(new OptionItem() { Text = "<", Value = 0 });
+                        options.Add(new OptionItem() { Text = "=", Value = 1 });
+                        options.Add(new OptionItem() { Text = ">", Value = 2 });
+                    }
+                    @Html.DropDownList(options,"Uroscopy.UCrBy",Model.Uroscopy.UCrBy,null)
+
+                    @Html.TextBoxFor(c=>c.Uroscopy.UCrValue,new{style="width: 40px;"})
+
+                    @{
+                        options.Clear();
+                        options.Add(new OptionItem() { Text = "ug/min", Value = 0 });
+                        options.Add(new OptionItem() { Text = "mg/g", Value = 1 });
+                        options.Add(new OptionItem() { Text = "mg/24h", Value = 2 });
+                        options.Add(new OptionItem() { Text = "mg/mmol", Value = 3 });
+                    }
+                    @Html.DropDownList(options,"Uroscopy.UCrUnit",Model.Uroscopy.UCrUnit,null)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label w-i-20">24小时尿蛋白定量</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Uroscopy.UrineProtein24H,new{style="width: 40px;"})g/24h 
+                </td>
+            </tr> 
+
+            <tr>
+                <td class="td-label w-i-20">尿碘</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Uroscopy.UrineIdoine,new{style="width: 40px;"})ug/L
+                </td>
+            </tr>                
+
+        </table>
+
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            血液检查
+        </legend>
+        
+        <table class="form_table" style="width:100%;">
+            <tr>
+                <td class="td-label w-i-20">血液常规</td>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    血红蛋白Hb
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(c=>c.Blood.Hb,new{style="width: 40px;"})g/L
+                                </td>                  
+                            </tr>                      
+                            <tr>                       
+                                <td>                   
+                                    红细胞压积HCT      
+                                </td>                  
+                                <td>                   
+                                    @Html.TextBoxFor(c=>c.Blood.HCT,new{style="width: 40px;"})
+                                </td>                  
+                            </tr>                      
+                            <tr>                       
+                                <td>                   
+                                    红细胞平均体积MCV  
+                                </td>                  
+                                <td>                   
+                                    @Html.TextBoxFor(c=>c.Blood.MCV,new{style="width: 40px;"})fl
+                                </td>                  
+                            </tr>                      
+                            <tr>                       
+                                <td>                   
+                                    红细胞计数RBC      
+                                </td>                  
+                                <td>                   
+                                    @Html.TextBoxFor(c=>c.Blood.RBC,new{style="width: 40px;"})×10<sup>12</sup>
+                                </td>                  
+                            </tr>                      
+                            <tr>                       
+                                <td>                   
+                                    白细胞计数WBC      
+                                </td>                  
+                                <td>                   
+                                    @Html.TextBoxFor(c=>c.Blood.WBC,new{style="width: 40px;"})×10<sup>9</sup>
+                                </td>                  
+                            </tr>                      
+                            <tr>                       
+                                <td>                   
+                                    血小板计数PLT      
+                                </td>                  
+                                <td>                   
+                                    @Html.TextBoxFor(c=>c.Blood.PLT,new{style="width: 40px;"})×10<sup>9</sup>
+                                </td>                  
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">指血糖<span class="sub-label">（最近一周）</span></td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>空腹血糖</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.TnbBasic.FBG,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>餐后2小时血糖</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.TnbBasic.PBG,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">HbA1C</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.TnbBasic.HbA1c,new{style="width: 40px;"})%
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血酮</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Blood.XueTong,new{style="width: 40px;"})mmol/L
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血清/碳酸氢盐</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Blood.XueQing,new{style="width: 40px;"})mmol/L
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">75gOGTT</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td style="width: 100px;">&nbsp;</td>
+                            <td style="width: 110px;">0min</td>
+                            <td style="width: 110px;">30min</td>
+                            <td style="width: 110px;">60min</td>
+                            <td style="width: 110px;">120min</td>
+                            <td style="width: 110px;">180min</td>
+                        </tr>
+                        <tr>
+                            <td>GLU</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glu0M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glu30M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glu60M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glu120M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glu180M,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>胰岛素</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Insulin0M,new{style="width: 40px;"})uIu/ml 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Insulin30M,new{style="width: 40px;"})uIu/ml  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Insulin60M,new{style="width: 40px;"})uIu/ml  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Insulin120M,new{style="width: 40px;"})uIu/ml  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Insulin180M,new{style="width: 40px;"})uIu/ml 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>C-肽</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.CTai0M,new{style="width: 40px;"})ng/ml
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.CTai30M,new{style="width: 40px;"})ng/ml 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.CTai60M,new{style="width: 40px;"})ng/ml  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.CTai120M,new{style="width: 40px;"})ng/ml  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.CTai180M,new{style="width: 40px;"})ng/ml 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>胰高血糖素</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glucagon0M,new{style="width: 40px;"})
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glucagon30M,new{style="width: 40px;"}) 
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glucagon60M,new{style="width: 40px;"})  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glucagon120M,new{style="width: 40px;"})  
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Glucagon180M,new{style="width: 40px;"}) 
+                            </td> 
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label w-i-20">糖尿病有关抗体</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>GAD</td>
+                            <td>
+                                @{
+                                    options.Clear();
+                                    options.Add(new OptionItem() { Text = "未查", Value = 0 });
+                                    options.Add(new OptionItem() { Text = "(-)", Value = 1 });
+                                    options.Add(new OptionItem() { Text = "+", Value = 2 });
+                                }
+                                @Html.DropDownList(options,"Blood.Gad",Model.Blood.Gad,null)
+                               
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>IAA</td>
+                            <td>
+                                @Html.DropDownList(options,"Blood.Iaa",Model.Blood.Iaa,null)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ICA</td>
+                            <td>
+                                @Html.DropDownList(options,"Blood.Ica",Model.Blood.Ica,null)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血脂</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>总胆固醇TC</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Tc,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>甘油三酯TG</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Tg,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>高密度脂蛋白HDL-C</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Hdl,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>低密度胆固醇LDL-C</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.LDL,new{style="width: 40px;"})mmol/L 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="td-label w-i-20">肾功能</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>BUN</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Bun,new{style="width: 40px;"})umol/L  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>SCr</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Scr,new{style="width: 40px;"})umol/L  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>eGFR</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Egfr,new{style="width: 40px;"})ml/min
+                                
+                                <span class="sub-label">Cockcroft-Gault(C-G)</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">肝功能</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>AST</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Ast,new{style="width: 40px;"})Iu/L  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ALT</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Alt,new{style="width: 40px;"})Iu/L   
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>GGT</td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.BloodRt.Ggt,new{style="width: 40px;"})Iu/L 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血尿酸UA</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.BloodRt.Ua,new{style="width: 40px;"})umol/L
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">癌胚抗原CEA</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Blood.Cea,new{style="width: 40px;"})
+                    ng/mL，甲胎蛋白AFP
+                    @Html.TextBoxFor(c=>c.Blood.Afp,new{style="width: 40px;"})
+                    ng/mL
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">血小板聚集率</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Blood.Par,new{style="width: 40px;"})
+                    %，纤维蛋白原
+                    @Html.TextBoxFor(c=>c.Blood.Fib,new{style="width: 40px;"})
+                    G/L 
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">超敏C反应蛋白CRP</td>
+                <td>
+                    @Html.TextBoxFor(c=>c.Blood.Crp,new{style="width: 40px;"})mg/L
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">甲状腺功能</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                TT<sub>3</sub>
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Tt3,new{style="width: 40px;"})ng/mL  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TT<sub>4</sub>
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Tt4,new{style="width: 40px;"})nmol/L   
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                FT<sub>3</sub>
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Ft3,new{style="width: 40px;"})pmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                FT<sub>4</sub>
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Ft4,new{style="width: 40px;"})pmol/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TSH
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Tsh,new{style="width: 40px;"})uIu/mL 
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="td-label w-i-20">甲状腺相关抗体</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                TR-Ab
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Trab,new{style="width: 40px;"})IU/L  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TG-Ab
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Tgab,new{style="width: 40px;"})KU/L   
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TPO-Ab
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Tpoab,new{style="width: 40px;"})KU/L 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TG
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(c=>c.Blood.Tg,new{style="width: 40px;"})ng/ml
+                            </td>
+                        </tr>
+                       
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+
+</form>
+
+<script type="text/javascript">
+
+    $('#Physical_Height').blur(computerBmi);
+    $('#TnbBasic_Weight').blur(computerBmi);
+
+    var computerBmi = function () {
+
+        $("#Physical_BMI").val("");
+
+        var fH = parseFloat($('#Physical_Height').val());
+
+        if (isNaN(fH)) {
+            return;
+        }
+
+        fH = fH * fH;
+        fH = fH /10000;
+
+        var fW = parseFloat($('#TnbBasic_Weight').val());
+        if (isNaN(fW)) {
+            return;
+        }
+
+        fW = fW * 100;
+        var fRet = Math.round(fW / fH);
+        $("#Physical_BMI").val(fRet / 100);
+    };
+
+
+    $('#Physical_Waistline').blur(computerWH);
+    $('#Physical_Hipline').blur(computerWH);
+
+    var computerWH = function () {
+
+        $("#Physical_WaistHipline").val("");
+        
+        var fW = parseFloat($('#Physical_Waistline').val());
+        if (isNaN(fW)) {
+            return;
+        }
+
+        var fH = parseFloat($('#Physical_Hipline').val());
+
+        if (isNaN(fH)) {
+            return;
+        }
+
+        fW = fW * 100;
+        var fRet = Math.round(fW / fH);
+
+        $("#Physical_WaistHipline").val(fRet / 100);
+    };
+</script>

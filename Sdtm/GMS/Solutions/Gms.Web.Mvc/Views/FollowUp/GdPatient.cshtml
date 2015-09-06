@@ -1,0 +1,124 @@
+﻿@using Gms.Domain
+@model Gms.Domain.Patient
+
+@{
+    Layout = "~/Views/Shared/EmptyLayout.cshtml";
+}
+
+<body class="easyui-layout">
+    
+    <input id="PatientId" value="@Model.Id" style="display: none">
+
+    <div data-options="region:'west'" style="width:180px;padding:10px;background-color: #E0ECFF;">
+        <div style="text-align: center;font-size:x-large;font-weight: bold;">
+            @Model.RealName
+        </div>
+        <div style="text-align: center;font-size:large;font-weight: bold;color: #FF6600;">
+            【@Model.CodeNo】
+        </div>
+        <div style="text-align: center;margin-top: 5px;">
+            <span>性别：
+               <b>@Model.Sex</b> 
+            </span>
+            <span style="margin-left: 10px;">年龄：
+                <b>@Model.Age</b>
+                岁</span>
+        </div>
+        <div style="margin-top: 20px;">
+            <span>
+                诊断:
+            </span>
+            @if (Model != null && Model.Diabetes != null)
+            {
+                <b id="Diabetes_Name">@Model.Diabetes.Name</b>
+                <a id="btnChange" href="#@Model.Id" class="btn-small">转型</a>
+            }
+        </div>
+        <div style="margin-top: 20px;">
+            <span>
+                病程:
+            </span>
+            @if (Model != null)
+            {
+                <b>@Model.DiseaseCourse</b>
+            }
+            
+        </div>
+        <div style="margin-top: 20px;">
+            <span>
+                病程阶段:
+            </span>
+            @if (Model != null)
+            {
+                <b>@Model.DiseaseStage</b>
+            }
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <span>
+                主治医生:
+            </span>
+            <b id="mainDoctor">
+                @if (Model != null && Model.Doctor!= null)
+                {
+                    @Model.Doctor.RealName
+                }
+            </b>
+
+            @if (Model != null)
+            {
+                <a id="selectDoctor" href="#@Model.Id" class="btn-small">修改</a>
+            }
+            
+        </div>
+        
+        <div id="selcet_doctor_dlg" dlgtitle="选择医生" style="display: none;padding:8px;">
+            <iframe id="selcet_doctor_dlg_content" style="width: 100%; height: 100%; border: none;" frameborder="no">
+                @*动态加载*@
+            </iframe>
+        </div>
+        
+
+        <div id="followupinfo" url="/FollowUp/FollowUpInfoView?patientid=@Model.Id" style="margin-top: 20px;">
+            
+        </div>
+
+        <div id="editdlg">
+            
+        </div>
+        
+        <div id="selectDiabetesDlg">
+            <div style="padding: 25px;">
+                @Html.DropDownListForCommonCode(e=>e.Diabetes,CommonCodeType.糖尿病类型)
+            </div>
+        </div>
+
+    </div>
+    
+    <div data-options="region:'center'" >
+        <div class="easyui-panel" data-options="fit:true,border:false">
+            <div id="mainTab" class="easyui-tabs" data-options="fit:true">	
+                <div title="基线资料" style="padding:10px">	
+                    <iframe frameborder="no" style="width: 100%;height:100%;border: none;" src="/BaseLine/Index/@Model.Id">基线资料</iframe>
+                </div>	
+                <div title="孕中随访" style="padding:10px">
+                    <iframe frameborder="no" style="width: 100%;height:100%;border: none;" url="/FollowUp/YunZhong/@Model.Id">孕中随访</iframe>
+                </div> 
+                <div title="产后随访" style="padding:10px">
+                    <iframe frameborder="no" style="width: 100%;height:100%;border: none;" url="/FollowUp/ChanHou/@Model.Id">产后随访</iframe>	
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+</body>
+
+<script type="text/javascript" src="@Url.Content("/Scripts/FollowUp/FollowUp.Patient.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        FollowUp.Patient();
+    });
+</script>
+
+
